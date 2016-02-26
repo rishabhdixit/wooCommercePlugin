@@ -17,106 +17,142 @@
                         "itemDetailsBgImage": ""
                     }
                 };
+                var ContentHome = this;
+                ContentHome.masterData = null;
+                ContentHome.data = angular.copy(_data);
+                ContentHome.bodyWYSIWYGOptions = {
+                    plugins: 'advlist autolink link image lists charmap print preview',
+                    skin: 'lightgray',
+                    trusted: true,
+                    theme: 'modern'
+                };
+                ContentHome.storeVerifySuccess = false;
+                ContentHome.storeVerifyFailure = false;
+
+                // create a new instance of the buildfire carousel editor
+                var editor = new Buildfire.components.carousel.editor("#carousel");
+                // this method will be called when a new item added to the list
+                editor.onAddItems = function (items) {
+                    if (!ContentHome.data.content)
+                        ContentHome.data.content = {};
+                    if (!ContentHome.data.content.carouselImages)
+                        ContentHome.data.content.carouselImages = [];
+                    ContentHome.data.content.carouselImages.push.apply(ContentHome.data.content.carouselImages, items);
+                    $scope.$digest();
+                };
+                // this method will be called when an item deleted from the list
+                editor.onDeleteItem = function (item, index) {
+                    ContentHome.data.content.carouselImages.splice(index, 1);
+                    $scope.$digest();
+                };
+                // this method will be called when you edit item details
+                editor.onItemChange = function (item, index) {
+                    ContentHome.data.content.carouselImages.splice(index, 1, item);
+                    $scope.$digest();
+                };
+                // this method will be called when you change the order of items
+                editor.onOrderChange = function (item, oldIndex, newIndex) {
+                    var temp = ContentHome.data.content.carouselImages[oldIndex];
+                    ContentHome.data.content.carouselImages[oldIndex] = ContentHome.data.content.carouselImages[newIndex];
+                    ContentHome.data.content.carouselImages[newIndex] = temp;
+                    $scope.$digest();
+                };
+
+
+                /*
+                 * Method to remove store name in case user clears the field
+                 * */
+
+                ContentHome.clearData = function () {
+                    if (!ContentHome.storeName) {
+                        ContentHome.data.content.storeName = null;
+                    }
+                };
+
+                updateMasterItem(_data);
+
+                function updateMasterItem(data) {
+                    ContentHome.masterData = angular.copy(data);
+                }
+
+                function isUnchanged(data) {
+                    return angular.equals(data, ContentHome.masterData);
+                }
+
                 /*
                  * Go pull any previously saved data
                  * */
-                Buildfire.datastore.get(function (err, result) {
-                    if (result) {
-                        $scope.data = result.data;
-                        $scope.id = result.id;
-                        $scope.$digest();
-                        if (tmrDelay)clearTimeout(tmrDelay);
-                    }
-                    /*
-                     * watch for changes in data and trigger the saveDataWithDelay function on change
-                     * */
-                    $scope.$watch('data', saveDataWithDelay, true);
-                });
+                var init = function () {
+                    var success = function (result) {
+                            console.info('init success result:', result);
+                            ContentHome.data = result.data;
+                            if (!ContentHome.data.content)
+                                ContentHome.data.content = {};
+                            if (!ContentHome.data.content.carouselImages)
+                                editor.loadItems([]);
+                            else
+                                editor.loadItems(ContentHome.data.content.carouselImages);
+                            if (ContentHome.data.content.storeName)
+                                ContentHome.storeName = ContentHome.data.content.storeName;
+
+                            updateMasterItem(ContentHome.data);
+                            if (tmrDelay)clearTimeout(tmrDelay);
+                        }
+                        , error = function (err) {
+                            if (err && err.code !== STATUS_CODE.NOT_FOUND) {
+                                console.error('Error while getting data', err);
+                                if (tmrDelay)clearTimeout(tmrDelay);
+                            }
+                        };
+                    DataStore.get(TAG_NAMES.WOOCOMMERCE_INFO).then(success, error);
+                };
+
 
                 /*
                  * Call the datastore to save the data object
                  */
-                var saveData = function (newObj) {
-
-                    if (newObj == undefined)return;
-                    if ($scope.frmMain.$invalid) {
-                        console.warn('invalid data, no save');
+                var saveData = function (newObj, tag) {
+                    if (typeof newObj === 'undefined') {
                         return;
                     }
-
-                    Buildfire.datastore.save(newObj, function (err, result) {
-                        if (err || !result)
-                            alert(JSON.stringify(err));
-                        else
-                            console.log('data saved');
-                    });
+                    var success = function (result) {
+                            console.info('Saved data result: ', result);
+                            updateMasterItem(newObj);
+                        }
+                        , error = function (err) {
+                            console.error('Error while saving data : ', err);
+                        };
+                    DataStore.save(newObj, tag).then(success, error);
                 };
+
 
                 /*
                  * create an artificial delay so api isnt called on every character entered
                  * */
                 var tmrDelay = null;
-                var saveDataWithDelay = function (newObj,oldObj) {
-                    if(newObj == oldObj)
-                        return;
-                    if (tmrDelay)clearTimeout(tmrDelay);
-                    tmrDelay = setTimeout(function () {
-                        saveData(newObj);
-                    }, 500);
+
+                var saveDataWithDelay = function (newObj) {
+                    if (newObj) {
+                        if (isUnchanged(newObj)) {
+                            return;
+                        }
+                        if (tmrDelay) {
+                            clearTimeout(tmrDelay);
+                        }
+                        tmrDelay = setTimeout(function () {
+                            saveData(JSON.parse(angular.toJson(newObj)), TAG_NAMES.WOOCOMMERCE_INFO);
+                        }, 500);
+                    }
                 };
 
                 /*
-                 * this is a way you can update only one property without sending the entire object
+                 * watch for changes in data and trigger the saveDataWithDelay function on change
                  * */
-                $scope.approve = function () {
-                    if ($scope.id)
-                        Buildfire.datastore.update($scope.id, {$set: {"content.approvedOn": new Date()}});
-                };
+                $scope.$watch(function () {
+                    return ContentHome.data;
+                }, saveDataWithDelay, true);
 
+                init();
 
-                /*
-                 * Open Image Lib
-                 */
-                $scope.openImageLib = function () {
-                    Buildfire.imageLib.showDialog({showIcons: false, multiSelection: false}, function (error, result) {
-                        if (result && result.selectedFiles && result.selectedFiles.length > 0) {
-                            $scope.data.content.bgURL = result.selectedFiles[0];
-                            $scope.$apply();
-                        }
-                    });
-                }
-
-                /*
-                 * Open action dialog
-                 */
-                $scope.openActionDialog = function () {
-                    var actionItem = {
-                        title: "build fire",
-                        "url": "https://www.facebook.com/buildfireapps",
-                        action: "linkToWeb",
-                        openIn: "browser",
-                        actionName: "Link to Web Content"
-                    };
-                    var options = {showIcon: true};
-                    Buildfire.actionItems.showDialog(null, options, function (err, actionItem) {
-                        if (err)
-                            console.log(err);
-                        else {
-                            debugger;
-                            if (!$scope.data.actionItems)
-                                $scope.data.actionItems = [];
-                            $scope.data.actionItems.push(actionItem);
-                            $scope.$apply();
-                        }
-
-                    });
-                };
-
-                $scope.resizeImage = function(url){
-                    if(!url)
-                        return "";
-                    else
-                        return Buildfire.imageLib.resizeImage(url,{width:32});
-                }
             }]);
 })(window.angular);

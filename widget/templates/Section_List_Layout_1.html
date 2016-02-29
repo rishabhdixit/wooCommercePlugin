@@ -1,0 +1,36 @@
+<div class="holder has-bottom padding-zero sticky-bottom-menu">
+    <div class="ecommerce-plugin scrollable layout3 infinite-scroll-parent">
+        <div class="media-center-banner plugin-banner clearfix" ng-if="WidgetHome.data">
+            <div id="carousel" ng-if="WidgetHome.data.content.carouselImages.length" build-fire-carousel=""></div>
+        </div>
+        <div class="padded padding-bottom-zero" ng-if="WidgetHome.showDescription(WidgetHome.data.content.description)">
+            <p ng-bind-html='WidgetHome.safeHtml(WidgetHome.data.content.description)'></p>
+        </div>
+        <div ng-if="WidgetHome.data">
+            <div class="list-layout" infinite-scroll="WidgetHome.loadMore()" infinite-scroll-distance="1" data-infinite-container=".infinite-scroll-parent" infinite-scroll-disabled="WidgetHome.busy">
+                <div class="list-item" ng-repeat="section in WidgetHome.sections">
+                    <div class="list-item-media text-left overflow-hidden">
+                        <div class="list-media-holder square-icon pull-left" ng-if="section.image.src">
+                            <img load-image="1x1"
+                                 data-final-src="{{section.image.src | cropImage : 60 :60}}"
+                                 ng-click="WidgetHome.showItems(section.handle)">
+                        </div>
+                        <div class="list-item-copy text-left padding-left-ten padding-right-ten">
+                            <p class="ellipsis margin-zero text-primary margin-top-twenty">
+                                <a class="text-primary" href="javascript:void(0);" ng-click="WidgetHome.showItems(section.handle)">
+                                    {{section.title}}
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom fixed-bottom border-top-grey clearfix bottom-zero">
+        <div class="col-xs-12 pull-left text-center">
+            <a class="whiteTheme bg-primary transition-third" href="javascript:void(0);"
+               ng-click="WidgetHome.goToCart()">Go to Cart</a>
+        </div>
+    </div>
+</div>

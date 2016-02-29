@@ -26,7 +26,10 @@
         <span>Store Url</span>
     </div>
     <div class="main col-md-9 pull-right">
-        <input type="text" name="field1" class="form-control">
+        <input type="text" class="form-control"
+               placeholder="Enter your store url"
+               ng-model="ContentHome.storeURL"
+               ng-change="ContentHome.clearData()">
     </div>
 </div>
 <hr class="none">
@@ -35,7 +38,10 @@
         <span>Consumer Key</span>
     </div>
     <div class="main col-md-9 pull-right">
-        <input type="text" name="field2" class="form-control">
+        <input type="text" class="form-control"
+               placeholder="Enter your consumer key"
+               ng-model="ContentHome.consumerKey"
+               ng-change="ContentHome.clearData()">
     </div>
 </div>
 <hr class="none">
@@ -44,15 +50,32 @@
         <span>Consumer Secret</span>
     </div>
     <div class="main col-md-9 pull-right">
-        <input type="text" name="field3" class="form-control">
+        <input type="text" class="form-control"
+               placeholder="Enter your consumer secret"
+               ng-model="ContentHome.consumerSecret"
+               ng-change="ContentHome.clearData()">
+    </div>
+    </div>
+    <hr class="none">
+<div class="item clearfix row">
+    <div class="col-md-4 pull-right">
+        <button class="btn btn-primary pull-right stretch"
+                ng-disabled="!ContentHome.storeURL && !ContentHome.consumerKey && !ContentHome.consumerSecret" ng-click="ContentHome.verifyStore()">
+            Done</button>
+    </div>
     </div>
 </div>
 <hr class="none">
 <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
-
     </div>
-    <div class="main col-md-9 pull-right">
-        <div class="alert alert-sm alert-danger text-center">Error message.</div>
+    <div class="main col-md-9 pull-right" ng-if="ContentHome.storeVerifySuccess">
+        <div class="alert alert-sm alert-success text-center">All credentials verified
+        </div>
+    </div>
+    <div class="main col-md-9 pull-right" ng-if="ContentHome.storeVerifyFailure">
+        <div class="alert alert-sm alert-danger text-center">Please enter
+            valid credentials
+        </div>
     </div>
 </div>

@@ -9,7 +9,9 @@
                     "content": {
                         "carouselImages": [],
                         "description": '<p>&nbsp;<br></p>',
-                        "storeName": ""
+                        "storeURL": "",
+                        "consumerKey": "",
+                        "consumerSecret": ""
                     },
                     "design": {
                         "sectionListLayout": LAYOUTS.sectionListLayout[0].name,
@@ -58,14 +60,55 @@
                     $scope.$digest();
                 };
 
+                /*
+                 * Method to check if given store name is a valid shopify store name
+                 * */
+                ContentHome.verifyStore = function () {
+                    var success = function (result) {
+                            if (result) {
+                                ContentHome.storeVerifySuccess = true;
+                                $timeout(function () {
+                                    ContentHome.storeVerifySuccess = false;
+                                }, 3000);
+                                ContentHome.storeVerifyFailure = false;
+                                ContentHome.data.content.storeURL = ContentHome.storeURL;
+                                ContentHome.data.content.consumerKey = ContentHome.consumerKey;
+                                ContentHome.data.content.consumerSecret = ContentHome.consumerSecret;
+                            }
+                            else {
+                                ContentHome.storeVerifyFailure = true;
+                                $timeout(function () {
+                                    ContentHome.storeVerifyFailure = false;
+                                }, 3000);
+                                ContentHome.storeVerifySuccess = false;
+                            }
+                        }
+                        , error = function (err) {
+                            ContentHome.storeVerifyFailure = true;
+                            $timeout(function () {
+                                ContentHome.storeVerifyFailure = false;
+                            }, 3000);
+                            ContentHome.storeVerifySuccess = false;
+                            console.error('Error In Fetching store details', err);
+                        };
+//                    ECommerceSDK.validateStoreName(ContentHome.storeName).then(success, error);
+
+                };
+
 
                 /*
                  * Method to remove store name in case user clears the field
                  * */
 
                 ContentHome.clearData = function () {
-                    if (!ContentHome.storeName) {
-                        ContentHome.data.content.storeName = null;
+                    if (!ContentHome.storeURL) {
+                        ContentHome.data.content.storeURL = null;
+                    }
+                    if (!ContentHome.consumerKey) {
+                        ContentHome.data.content.consumerKey = null;
+                    }
+                    if (!ContentHome.consumerSecret) {
+                        ContentHome.data.content.consumerSecret = null;
                     }
                 };
 
@@ -92,8 +135,12 @@
                                 editor.loadItems([]);
                             else
                                 editor.loadItems(ContentHome.data.content.carouselImages);
-                            if (ContentHome.data.content.storeName)
-                                ContentHome.storeName = ContentHome.data.content.storeName;
+                            if (ContentHome.data.content.storeURL)
+                                ContentHome.storeURL = ContentHome.data.content.storeURL;
+                            if (ContentHome.data.content.consumerKey)
+                                ContentHome.consumerKey = ContentHome.data.content.consumerKey;
+                            if (ContentHome.data.content.consumerSecret)
+                                ContentHome.consumerSecret = ContentHome.data.content.consumerSecret;
 
                             updateMasterItem(ContentHome.data);
                             if (tmrDelay)clearTimeout(tmrDelay);

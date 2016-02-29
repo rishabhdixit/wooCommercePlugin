@@ -24,12 +24,12 @@
     })
     .constant('LAYOUTS', {
       itemListLayout: [
-        {name: "Item_List_Layout_1"},
-        {name: "Item_List_Layout_2"}
+        {name: "itemlistlayout1"},
+        {name: "itemlistlayout2"}
       ],
       sectionListLayout: [
-        {name: "Section_List_Layout_1"},
-        {name: "Section_List_Layout_2"}
+        {name: "sectionlistlayout1"},
+        {name: "sectionlistlayout2"}
       ]
     });
 })(window.angular);

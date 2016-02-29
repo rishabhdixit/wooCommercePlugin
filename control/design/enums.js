@@ -3,7 +3,7 @@
 (function (angular) {
   angular.module('wooCommercePluginDesign')
     .constant('TAG_NAMES', {
-      SHOPIFY_INFO: 'shopifyInfo'
+       WOOCOMMERCE_INFO: 'wooCommerceInfo'
     })
     .constant('STATUS_CODE', {
       INSERTED: 'inserted',

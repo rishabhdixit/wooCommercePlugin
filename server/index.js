@@ -77,7 +77,6 @@ app.get('/getProducts', function (req, res) {
     if(req.query && req.query.id) {
         WooCommerce.get('products/' + req.query.id, function(err, data, response) {
             response = JSON.parse(response);
-            console.log('>>>>>>>>>>>', err, response.errors.length, response.errors);
             if(response && response.errors && response.errors.length > 0 && response.errors[0].code) {
                 res.status(getErrorStatusCode(response.errors[0].code)).send({
                     data: response,

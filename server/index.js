@@ -66,18 +66,30 @@ app.get('/initialize', function (req, res) {
         consumerSecret: 'cs_5aac7043dfe691b4a60db9a74c343c7744ef5a33', // Your consumer secret
         version: 'v3' // WooCommerce API version
     });
-    res.send({
-        data: 'successfully initialized',
-        status: 200
-    }).end();
+    if(WooCommerce) {
+        res.send({
+            data: 'Successfully Initialized',
+            status: 200
+        })
+    } else {
+        res.send({
+            data: 'Not Initialized',
+            status: 500
+        });
+    }
 
 });
 
 app.get('/getProducts', function (req, res) {
     if(req.query && req.query.id) {
         WooCommerce.get('products/' + req.query.id, function(err, data, response) {
-            response = JSON.parse(response);
-            if(response && response.errors && response.errors.length > 0 && response.errors[0].code) {
+            response = response && JSON.parse(response);
+            if(err) {
+                res.send({
+                    data: err,
+                    status: 500
+                });
+            } else if(response && response.errors && response.errors.length > 0 && response.errors[0].code) {
                 res.status(getErrorStatusCode(response.errors[0].code)).send({
                     data: response,
                     status: getErrorStatusCode(response.errors[0].code)
@@ -91,9 +103,14 @@ app.get('/getProducts', function (req, res) {
         });
     } else {
         WooCommerce.get('products', function (err, data, response) {
-            response = JSON.parse(response);
+            response = response && JSON.parse(response);
             console.log('response is::::::::::', err, response);
-            if(response && response.errors && response.errors.length > 0 && response.errors[0].code) {
+            if(err) {
+                res.send({
+                    data: err,
+                    status: 500
+                });
+            } else if(response && response.errors && response.errors.length > 0 && response.errors[0].code) {
                 res.status(getErrorStatusCode(response.errors[0].code)).send({
                     data: response,
                     status: getErrorStatusCode(response.errors[0].code)
@@ -106,6 +123,50 @@ app.get('/getProducts', function (req, res) {
             }
         });
     }
+});
+
+app.get('/productCategories', function (req, res) {
+    WooCommerce.get('products/categories', function(err, data, response) {
+        response = response && JSON.parse(response);
+        if(err) {
+            res.send({
+                data: err,
+                status: 500
+            });
+        } else if(response && response.errors && response.errors.length > 0 && response.errors[0].code) {
+            res.status(getErrorStatusCode(response.errors[0].code)).send({
+                data: response,
+                status: getErrorStatusCode(response.errors[0].code)
+            });
+        } else {
+            res.send({
+                data: response,
+                status: 200
+            });
+        }
+    });
+});
+
+app.get('/getProductsByCategory', function (req, res) {
+    WooCommerce.get('products?filter[category]=color', function (err, data, response) {
+        response = response && JSON.parse(response);
+        if(err) {
+            res.send({
+                data: err,
+                status: 500
+            });
+        } else if(response && response.errors && response.errors.length > 0 && response.errors[0].code) {
+            res.status(getErrorStatusCode(response.errors[0].code)).send({
+                data: response,
+                status: getErrorStatusCode(response.errors[0].code)
+            });
+        } else {
+            res.send({
+                data: response,
+                status: 200
+            });
+        }
+    })
 });
 
 /**

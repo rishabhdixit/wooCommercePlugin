@@ -126,7 +126,10 @@ app.get('/getProducts', function (req, res) {
 });
 
 app.get('/productCategories', function (req, res) {
-    WooCommerce.get('products/categories', function(err, data, response) {
+    var url = req.query && req.query.pageSize && req.query.pageNumber ? 'products/categories?filter[limit]=' + req.query.pageSize + '&page=' + req.query.pageNumber : 'products/categories';
+    console.log('url is >>>>>>>>>>>', url);
+    WooCommerce.get(url, function(err, data, response) {
+        console.log('LLLLLLLLLLL', err, response);
         response = response && JSON.parse(response);
         if(err) {
             res.send({
@@ -148,7 +151,9 @@ app.get('/productCategories', function (req, res) {
 });
 
 app.get('/getProductsByCategory', function (req, res) {
-    WooCommerce.get('products?filter[category]=color', function (err, data, response) {
+    var url = req.query && req.query.slug ? 'products?filter[category]=' + req.query.slug + '&filter[limit]=' + req.query.pageSize + '&page=' + req.query.pageNumber : 'products/';
+    console.log('getProductsByCategory url is:', url);
+    WooCommerce.get(url, function (err, data, response) {
         response = response && JSON.parse(response);
         if(err) {
             res.send({

@@ -54,7 +54,7 @@
                 var currentStoreUrl = "";
 
                 var getSections = function (storeURL, consumerKey, consumerSecret) {
-                    console.log('<<<<<<<<<<<<<<<<<< inside get section of widget hoem controller');
+                    console.log('<<<<<<<<<<<<<<<<<< inside get section of widget home controller');
                     Buildfire.spinner.show();
                     var success = function (result) {
                             Buildfire.spinner.hide();

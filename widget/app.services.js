@@ -166,7 +166,12 @@
                           else
                               deferred.resolve(null);
                       });*/
-                      $http.get('http://localhost:3000/productCategories')
+                      $http.get('http://localhost:3000/productCategories', {
+                          params: {
+                              pageSize: PAGINATION.sectionsCount,
+                              pageNumber: pageNumber || 1
+                          }
+                      })
                           .success(function (response) {
                               if(response)
                                 deferred.resolve(response);
@@ -179,131 +184,37 @@
                   }
                   return deferred.promise;
               };
-              var getItems = function (storeName, handle, pageNumber) {
+              var getItems = function (storeURL, consumerKey, consumerSecret, slug, pageNumber) {
                   var deferred = $q.defer();
                   var _url = '';
-                  if (!storeName) {
+                  if (!storeURL && !consumerKey && !consumerSecret) {
                       deferred.reject(new Error({
                           code: STATUS_CODE.UNDEFINED_DATA,
                           message: STATUS_MESSAGES.UNDEFINED_DATA
                       }));
                   } else {
-                      var eCommerceSDKObj = new eCommerceSDK.account({accountName: storeName});
-                      eCommerceSDKObj.getProducts(handle, {
-                          pageSize: PAGINATION.sectionsCount,
-                          pageNumber: pageNumber || 1
-                      }, function (products) {
-                          if (products)
-                              deferred.resolve(products);
-                          else
-                              deferred.resolve(null);
-                      });
-                  }
-                  return deferred.promise;
-              };
-              var getProduct = function (storeName, handle) {
-                  var deferred = $q.defer();
-                  var _url = '';
-                  if (!storeName) {
-                      deferred.reject(new Error({
-                          code: STATUS_CODE.UNDEFINED_DATA,
-                          message: STATUS_MESSAGES.UNDEFINED_DATA
-                      }));
-                  } else {
-                      var eCommerceSDKObj = new eCommerceSDK.account({accountName: storeName});
-                      eCommerceSDKObj.getProduct(handle, {}, function (product) {
-                          if (product)
-                              deferred.resolve(product);
-                          else
-                              deferred.resolve(null);
-                      });
-                  }
-                  return deferred.promise;
-              };
-              var getCart = function (storeName) {
-                  var deferred = $q.defer();
-                  var _url = '';
-                  if (!storeName) {
-                      deferred.reject(new Error({
-                          code: STATUS_CODE.UNDEFINED_DATA,
-                          message: STATUS_MESSAGES.UNDEFINED_DATA
-                      }));
-                  } else {
-                      var eCommerceSDKObj = new eCommerceSDK.account({accountName: storeName});
-                      eCommerceSDKObj.getCart({}, function (cart) {
-                          if (cart)
-                              deferred.resolve(cart);
-                          else
-                              deferred.resolve(null);
-                      });
-                  }
-                  return deferred.promise;
-              };
-              var addItemInCart = function (storeName, variant_id, quantity) {
-                  var deferred = $q.defer();
-                  var _url = '';
-                  if (!storeName) {
-                      deferred.reject(new Error({
-                          code: STATUS_CODE.UNDEFINED_DATA,
-                          message: STATUS_MESSAGES.UNDEFINED_DATA
-                      }));
-                  } else {
-                      var eCommerceSDKObj = new eCommerceSDK.account({accountName: storeName});
-                      eCommerceSDKObj.addItem(variant_id, quantity, {}, function (cart) {
-                          if (cart)
-                              deferred.resolve(cart);
-                          else
-                              deferred.resolve(null);
-                      });
-                  }
-                  return deferred.promise;
-              };
-              var updateCartItem = function (storeName, variant_id, quantity) {
-                  var deferred = $q.defer();
-                  var _url = '';
-                  if (!storeName) {
-                      deferred.reject(new Error({
-                          code: STATUS_CODE.UNDEFINED_DATA,
-                          message: STATUS_MESSAGES.UNDEFINED_DATA
-                      }));
-                  } else {
-                      var eCommerceSDKObj = new eCommerceSDK.account({accountName: storeName});
-                      eCommerceSDKObj.changeItem(variant_id, quantity, {}, function (cart) {
-                          if (cart)
-                              deferred.resolve(cart);
-                          else
-                              deferred.resolve(null);
-                      });
-                  }
-                  return deferred.promise;
-              };
-              var checkoutCart = function (storeName) {
-                  var deferred = $q.defer();
-                  var _url = '';
-                  if (!storeName) {
-                      deferred.reject(new Error({
-                          code: STATUS_CODE.UNDEFINED_DATA,
-                          message: STATUS_MESSAGES.UNDEFINED_DATA
-                      }));
-                  } else {
-                      var eCommerceSDKObj = new eCommerceSDK.account({accountName: storeName});
-                      eCommerceSDKObj.checkout(function (redirectUrl) {
-                          if (redirectUrl)
-                              deferred.resolve(redirectUrl);
-                          else
-                              deferred.resolve(null);
-                      });
+                      $http.get('http://localhost:3000/getProductsByCategory', {
+                          params: {
+                              slug: slug,
+                              pageNumber: pageNumber || 1,
+                              pageSize: PAGINATION.sectionsCount
+                          }
+                      })
+                          .success(function (response) {
+                              if (response)
+                                  deferred.resolve(response);
+                              else
+                                  deferred.resolve(null);
+                          })
+                          .error(function (err) {
+                                deferred.reject(err);
+                          })
                   }
                   return deferred.promise;
               };
               return {
                   getSections: getSections,
-                  getItems: getItems,
-                  getProduct: getProduct,
-                  getCart: getCart,
-                  addItemInCart: addItemInCart,
-                  updateCartItem: updateCartItem,
-                  checkoutCart: checkoutCart
+                  getItems: getItems
               };
           }])
     .factory('Location', [function () {

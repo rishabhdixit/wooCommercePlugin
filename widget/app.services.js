@@ -212,9 +212,36 @@
                   }
                   return deferred.promise;
               };
+              var getProduct = function (storeURL, consumerKey, consumerSecret, id) {
+                  var deferred = $q.defer();
+                  var _url = '';
+                  if (!storeURL || !consumerKey || !consumerSecret) {
+                      deferred.reject(new Error({
+                          code: STATUS_CODE.UNDEFINED_DATA,
+                          message: STATUS_MESSAGES.UNDEFINED_DATA
+                      }));
+                  } else {
+                      $http.get('http://localhost:3000/getProducts', {
+                          params: {
+                              id: id
+                          }
+                      })
+                          .success(function (response) {
+                              if(response)
+                                  deferred.resolve(response);
+                              else
+                                  deferred.resolve(null);
+                          })
+                          .error(function (err) {
+                              deferred.reject(err);
+                          })
+                  }
+                  return deferred.promise;
+              };
               return {
                   getSections: getSections,
-                  getItems: getItems
+                  getItems: getItems,
+                  getProduct: getProduct
               };
           }])
     .factory('Location', [function () {

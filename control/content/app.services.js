@@ -106,4 +106,33 @@
           }
         }
       }])
+      .factory('WooCommerceSDK', ['$q', 'STATUS_CODE', 'STATUS_MESSAGES', '$http',
+          function ($q, STATUS_CODE, STATUS_MESSAGES, $http) {
+              var validateStore = function (storeURL, consumerKey, consumerSecret) {
+                  var deferred = $q.defer();
+                  var _url = '';
+                  if (!storeURL || !consumerKey || !consumerSecret) {
+                      deferred.reject(new Error({
+                          code: STATUS_CODE.UNDEFINED_DATA,
+                          message: STATUS_MESSAGES.UNDEFINED_DATA
+                      }));
+                  } else {
+                        $http.post('http://localhost:3000/initialize' , {
+                            storeURL: storeURL,
+                            consumerKey: consumerKey,
+                            consumerSecret: consumerSecret
+                        })
+                            .success(function (response) {
+                                deferred.resolve(response);
+                            })
+                            .error(function (error) {
+                                deferred.reject(error);
+                            })
+                  }
+                  return deferred.promise;
+              };
+              return {
+                  validateStore: validateStore
+              };
+          }])
 })(window.angular, window.buildfire);

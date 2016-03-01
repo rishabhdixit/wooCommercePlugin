@@ -59,11 +59,11 @@ app.get('/', function (req, res) {
     res.send('Welcome to our proxy server!').end();
 });
 
-app.get('/initialize', function (req, res) {
+app.post('/initialize', function (req, res) {
     WooCommerce = new WooCommerceAPI({
-        url: 'http://kmtabish.com/wp', // Your store URL
-        consumerKey: 'ck_8324bff3206f34928f5811540599e3166a59c091', // Your consumer key
-        consumerSecret: 'cs_5aac7043dfe691b4a60db9a74c343c7744ef5a33', // Your consumer secret
+        url: req.body.storeURL, // Your store URL ('http://kmtabish.com/wp')
+        consumerKey: req.body.consumerKey, // Your consumer key ('ck_8324bff3206f34928f5811540599e3166a59c091')
+        consumerSecret: req.body.consumerSecret, // Your consumer secret ('cs_5aac7043dfe691b4a60db9a74c343c7744ef5a33')
         version: 'v3' // WooCommerce API version
     });
     if(WooCommerce) {

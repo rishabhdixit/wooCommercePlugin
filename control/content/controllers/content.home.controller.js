@@ -3,8 +3,8 @@
 (function (angular) {
     angular
         .module('wooCommercePluginContent')
-        .controller('ContentHomeCtrl', ['$scope', 'Buildfire', 'DataStore', 'TAG_NAMES', 'STATUS_CODE', '$timeout', 'LAYOUTS',
-            function ($scope, Buildfire, DataStore, TAG_NAMES, STATUS_CODE, $timeout, LAYOUTS) {
+        .controller('ContentHomeCtrl', ['$scope', 'Buildfire', 'DataStore', 'WooCommerceSDK', 'TAG_NAMES', 'STATUS_CODE', '$timeout', 'LAYOUTS',
+            function ($scope, Buildfire, DataStore, WooCommerceSDK, TAG_NAMES, STATUS_CODE, $timeout, LAYOUTS) {
                 var _data = {
                     "content": {
                         "carouselImages": [],
@@ -91,7 +91,7 @@
                             ContentHome.storeVerifySuccess = false;
                             console.error('Error In Fetching store details', err);
                         };
-//                    ECommerceSDK.validateStoreName(ContentHome.storeName).then(success, error);
+                    WooCommerceSDK.validateStore(ContentHome.storeURL, ContentHome.consumerKey, ContentHome.consumerSecret).then(success, error);
 
                 };
 

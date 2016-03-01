@@ -10,15 +10,15 @@
             <div class="list-layout" infinite-scroll="WidgetHome.loadMore()" infinite-scroll-distance="1" data-infinite-container=".infinite-scroll-parent" infinite-scroll-disabled="WidgetHome.busy">
                 <div class="list-item" ng-repeat="section in WidgetHome.sections">
                     <div class="list-item-media text-left overflow-hidden">
-                        <div class="list-media-holder square-icon pull-left" ng-if="section.image.src">
+                        <div class="list-media-holder square-icon pull-left" ng-if="section.image">
                             <img load-image="1x1"
-                                 data-final-src="{{section.image.src | cropImage : 60 :60}}"
-                                 ng-click="WidgetHome.showItems(section.handle)">
+                                 data-final-src="{{section.image | cropImage : 60 :60}}"
+                                 ng-click="WidgetHome.showItems(section.slug)">
                         </div>
                         <div class="list-item-copy text-left padding-left-ten padding-right-ten">
                             <p class="ellipsis margin-zero text-primary margin-top-twenty">
-                                <a class="text-primary" href="javascript:void(0);" ng-click="WidgetHome.showItems(section.handle)">
-                                    {{section.title}}
+                                <a class="text-primary" href="javascript:void(0);" ng-click="WidgetHome.showItems(section.slug)">
+                                    {{section.name}}
                                 </a>
                             </p>
                         </div>

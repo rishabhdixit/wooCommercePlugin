@@ -3,8 +3,8 @@
 (function (angular) {
     angular
         .module('wooCommercePluginWidget')
-        .controller('WidgetHomeCtrl', ['$scope', 'DataStore', 'TAG_NAMES', '$sce', 'LAYOUTS', '$rootScope', 'PAGINATION', 'Buildfire', 'ViewStack',
-            function ($scope, DataStore, TAG_NAMES, $sce, LAYOUTS, $rootScope, PAGINATION, Buildfire, ViewStack) {
+        .controller('WidgetHomeCtrl', ['$scope', 'DataStore', 'WooCommerceSDK', 'TAG_NAMES', '$sce', 'LAYOUTS', '$rootScope', 'PAGINATION', 'Buildfire', 'ViewStack',
+            function ($scope, DataStore, WooCommerceSDK, TAG_NAMES, $sce, LAYOUTS, $rootScope, PAGINATION, Buildfire, ViewStack) {
                 var WidgetHome = this;
                 WidgetHome.data = null;
                 WidgetHome.sections = [];
@@ -24,20 +24,21 @@
                 $rootScope.deviceWidth = window.innerWidth;
                 $rootScope.backgroundImage = "";
                 WidgetHome.loadMore = function () {
+                    console.log('>>>>>>>>>>>>>> inside load more widget home controller');
                     if (WidgetHome.busy) return;
                     WidgetHome.busy = true;
-                    if (WidgetHome.data.content.storeURL)
-                        getSections(WidgetHome.data.content.storeURL);
+                    if (WidgetHome.data.content.storeURL && WidgetHome.data.content.consumerKey && WidgetHome.data.content.consumerSecret)
+                        getSections(WidgetHome.data.content.storeURL, WidgetHome.data.content.consumerKey, WidgetHome.data.content.consumerSecret);
                     else
                         WidgetHome.sections = [];
                 };
 
-                WidgetHome.showItems = function (handle) {
+                WidgetHome.showItems = function (slug) {
                     if (WidgetHome.data.design.itemListLayout)
                         ViewStack.push({
                             template: WidgetHome.data.design.itemListLayout,
                             params: {
-                                handle: handle,
+                                slug: slug,
                                 controller: "WidgetItemsCtrl as WidgetItems",
                                 shouldUpdateTemplate : true
                             }
@@ -52,12 +53,13 @@
 
                 var currentStoreUrl = "";
 
-                var getSections = function (storeURL) {
+                var getSections = function (storeURL, consumerKey, consumerSecret) {
+                    console.log('<<<<<<<<<<<<<<<<<< inside get section of widget hoem controller');
                     Buildfire.spinner.show();
                     var success = function (result) {
                             Buildfire.spinner.hide();
-                            console.log("********************************", result);
-                            WidgetHome.sections = WidgetHome.sections.length ? WidgetHome.sections.concat(result) : result;
+                            console.log("********************************", result.data);
+                            WidgetHome.sections = WidgetHome.sections.length ? WidgetHome.sections.concat(result.data.product_categories) : result.data.product_categories;
                             WidgetHome.pageNumber = WidgetHome.pageNumber + 1;
                             if (result.length == PAGINATION.sectionsCount) {
                                 WidgetHome.busy = false;
@@ -67,7 +69,7 @@
                             Buildfire.spinner.hide();
                             console.error('Error In Fetching category list', err);
                         };
-//                    ECommerceSDK.getSections(storeName, WidgetHome.pageNumber).then(success, error);
+                    WooCommerceSDK.getSections(storeURL, consumerKey, consumerSecret, WidgetHome.pageNumber).then(success, error);
                 };
 
                 /*

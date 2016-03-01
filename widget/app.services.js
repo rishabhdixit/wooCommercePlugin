@@ -145,6 +145,167 @@
           }
         }
       }])
+      .factory('WooCommerceSDK', ['$q', 'STATUS_CODE', 'STATUS_MESSAGES', 'PAGINATION', '$http',
+          function ($q, STATUS_CODE, STATUS_MESSAGES, PAGINATION, $http) {
+              var getSections = function (storeURL, consumerKey, consumerSecret, pageNumber) {
+                  var deferred = $q.defer();
+                  var _url = '';
+                  if (!storeURL || !consumerKey || !consumerSecret) {
+                      deferred.reject(new Error({
+                          code: STATUS_CODE.UNDEFINED_DATA,
+                          message: STATUS_MESSAGES.UNDEFINED_DATA
+                      }));
+                  } else {
+                      /*var eCommerceSDKObj = new eCommerceSDK.account({accountName: storeName});
+                      eCommerceSDKObj.getCollections({
+                          pageSize: PAGINATION.sectionsCount,
+                          pageNumber: pageNumber || 1
+                      }, function (collections) {
+                          if (collections)
+                              deferred.resolve(collections);
+                          else
+                              deferred.resolve(null);
+                      });*/
+                      $http.get('http://localhost:3000/productCategories')
+                          .success(function (response) {
+                              if(response)
+                                deferred.resolve(response);
+                              else
+                                deferred.resolve(null);
+                          })
+                          .error(function (err) {
+                              deferred.reject(err);
+                          })
+                  }
+                  return deferred.promise;
+              };
+              var getItems = function (storeName, handle, pageNumber) {
+                  var deferred = $q.defer();
+                  var _url = '';
+                  if (!storeName) {
+                      deferred.reject(new Error({
+                          code: STATUS_CODE.UNDEFINED_DATA,
+                          message: STATUS_MESSAGES.UNDEFINED_DATA
+                      }));
+                  } else {
+                      var eCommerceSDKObj = new eCommerceSDK.account({accountName: storeName});
+                      eCommerceSDKObj.getProducts(handle, {
+                          pageSize: PAGINATION.sectionsCount,
+                          pageNumber: pageNumber || 1
+                      }, function (products) {
+                          if (products)
+                              deferred.resolve(products);
+                          else
+                              deferred.resolve(null);
+                      });
+                  }
+                  return deferred.promise;
+              };
+              var getProduct = function (storeName, handle) {
+                  var deferred = $q.defer();
+                  var _url = '';
+                  if (!storeName) {
+                      deferred.reject(new Error({
+                          code: STATUS_CODE.UNDEFINED_DATA,
+                          message: STATUS_MESSAGES.UNDEFINED_DATA
+                      }));
+                  } else {
+                      var eCommerceSDKObj = new eCommerceSDK.account({accountName: storeName});
+                      eCommerceSDKObj.getProduct(handle, {}, function (product) {
+                          if (product)
+                              deferred.resolve(product);
+                          else
+                              deferred.resolve(null);
+                      });
+                  }
+                  return deferred.promise;
+              };
+              var getCart = function (storeName) {
+                  var deferred = $q.defer();
+                  var _url = '';
+                  if (!storeName) {
+                      deferred.reject(new Error({
+                          code: STATUS_CODE.UNDEFINED_DATA,
+                          message: STATUS_MESSAGES.UNDEFINED_DATA
+                      }));
+                  } else {
+                      var eCommerceSDKObj = new eCommerceSDK.account({accountName: storeName});
+                      eCommerceSDKObj.getCart({}, function (cart) {
+                          if (cart)
+                              deferred.resolve(cart);
+                          else
+                              deferred.resolve(null);
+                      });
+                  }
+                  return deferred.promise;
+              };
+              var addItemInCart = function (storeName, variant_id, quantity) {
+                  var deferred = $q.defer();
+                  var _url = '';
+                  if (!storeName) {
+                      deferred.reject(new Error({
+                          code: STATUS_CODE.UNDEFINED_DATA,
+                          message: STATUS_MESSAGES.UNDEFINED_DATA
+                      }));
+                  } else {
+                      var eCommerceSDKObj = new eCommerceSDK.account({accountName: storeName});
+                      eCommerceSDKObj.addItem(variant_id, quantity, {}, function (cart) {
+                          if (cart)
+                              deferred.resolve(cart);
+                          else
+                              deferred.resolve(null);
+                      });
+                  }
+                  return deferred.promise;
+              };
+              var updateCartItem = function (storeName, variant_id, quantity) {
+                  var deferred = $q.defer();
+                  var _url = '';
+                  if (!storeName) {
+                      deferred.reject(new Error({
+                          code: STATUS_CODE.UNDEFINED_DATA,
+                          message: STATUS_MESSAGES.UNDEFINED_DATA
+                      }));
+                  } else {
+                      var eCommerceSDKObj = new eCommerceSDK.account({accountName: storeName});
+                      eCommerceSDKObj.changeItem(variant_id, quantity, {}, function (cart) {
+                          if (cart)
+                              deferred.resolve(cart);
+                          else
+                              deferred.resolve(null);
+                      });
+                  }
+                  return deferred.promise;
+              };
+              var checkoutCart = function (storeName) {
+                  var deferred = $q.defer();
+                  var _url = '';
+                  if (!storeName) {
+                      deferred.reject(new Error({
+                          code: STATUS_CODE.UNDEFINED_DATA,
+                          message: STATUS_MESSAGES.UNDEFINED_DATA
+                      }));
+                  } else {
+                      var eCommerceSDKObj = new eCommerceSDK.account({accountName: storeName});
+                      eCommerceSDKObj.checkout(function (redirectUrl) {
+                          if (redirectUrl)
+                              deferred.resolve(redirectUrl);
+                          else
+                              deferred.resolve(null);
+                      });
+                  }
+                  return deferred.promise;
+              };
+              return {
+                  getSections: getSections,
+                  getItems: getItems,
+                  getProduct: getProduct,
+                  getCart: getCart,
+                  addItemInCart: addItemInCart,
+                  updateCartItem: updateCartItem,
+                  checkoutCart: checkoutCart
+              };
+          }])
     .factory('Location', [function () {
       var _location = window.location;
       return {

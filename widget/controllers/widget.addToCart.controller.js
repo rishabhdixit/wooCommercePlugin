@@ -32,12 +32,7 @@
               WidgetAddToCart.item = result.data.product;
               if (WidgetAddToCart.item.variations.length) {
                 WidgetAddToCart.currentAddedItemInCart = {
-                  Variant: {
-                    name: WidgetAddToCart.item && WidgetAddToCart.item.variations && WidgetAddToCart.item.variations.length > 0 && WidgetAddToCart.item.variations[0].attributes && WidgetAddToCart.item.variations[0].attributes.length > 0 && WidgetAddToCart.item.variations[0].attributes[0].name,
-                    option: WidgetAddToCart.item && WidgetAddToCart.item.variations && WidgetAddToCart.item.variations.length > 0 && WidgetAddToCart.item.variations[0].attributes && WidgetAddToCart.item.variations[0].attributes.length > 0 && WidgetAddToCart.item.variations[0].attributes[0].option,
-                    price: WidgetAddToCart.item && WidgetAddToCart.item.variations && WidgetAddToCart.item.variations.length > 0 && WidgetAddToCart.item.variations[0].price,
-                    id: WidgetAddToCart.item && WidgetAddToCart.item.variations && WidgetAddToCart.item.variations.length > 0 && WidgetAddToCart.item.variations[0].id
-                  }
+                  Variant: WidgetAddToCart.item.variations[0]
                 };
               }
               console.log("WidgetAddToCart", WidgetAddToCart)
@@ -104,24 +99,44 @@
 
         WidgetAddToCart.selectVariant = function (variant) {
           WidgetAddToCart.currentAddedItemInCart.Variant = variant;
-          WidgetAddToCart.currentAddedItemInCart.Variant.name = variant && variant.attributes && variant.attributes.length > 0 && variant.attributes[0].name;
-          WidgetAddToCart.currentAddedItemInCart.Variant.option = variant && variant.attributes && variant.attributes.length > 0 && variant.attributes[0].option;
-          WidgetAddToCart.currentAddedItemInCart.Variant.price = variant && variant.price;
-
         };
 
-        WidgetAddToCart.proceedToCart = function (id) {
-          var success = function (result) {
-            console.log("****************************Success************", result);
+        WidgetAddToCart.proceedToCart = function (item) {
+         /* var success = function (result) {
+            console.log("****************************Success************", result);*/
+            var flag = 0;
+            if(item) {
+                item.quantity = WidgetAddToCart.quantity;
+                item.product_title = WidgetAddToCart.item.title;
+                item.variant_title = WidgetAddToCart.currentAddedItemInCart.Variant && WidgetAddToCart.currentAddedItemInCart.Variant.attributes && WidgetAddToCart.currentAddedItemInCart.Variant.attributes.length && WidgetAddToCart.currentAddedItemInCart.Variant.attributes[0].option;
+            }
+            if($rootScope.cart && $rootScope.cart.items && $rootScope.cart.items.length) {
+                $rootScope.cart.items.forEach(function (cartItem) {
+                    if(cartItem.id == item.id) {
+                        cartItem.quantity = cartItem.quantity + item.quantity;
+                        flag = 1;
+                    }
+                });
+            }
+            if(!flag) {
+                if ($rootScope.cart && $rootScope.cart.items && $rootScope.cart.items.length > 0) {
+                    $rootScope.cart.items.push(item);
+                } else {
+                    $rootScope.cart = {
+                        items: []
+                    };
+                    $rootScope.cart.items.push(item);
+                }
+            }
             ViewStack.push({
               template: 'Shopping_Cart'
             });
-          };
+//          };
 
-          var error = function (error) {
+         /* var error = function (error) {
             console.log("****************************Error************", error);
           };
-          /*ECommerceSDK.addItemInCart(WidgetAddToCart.data.content.storeURL,
+          WooCommerceSDK.addItemInCart(WidgetAddToCart.data.content.storeURL,
             WidgetAddToCart.currentAddedItemInCart.Variant.id,
             WidgetAddToCart.quantity)
             .then(success, error);*/

@@ -15,7 +15,7 @@
                 </div>
                 <div class="col-xs-2 pull-right right-icon">
                     <a class="padded-icon pull-right border-radius-three text-center" style="background:#fff;">
-                        <span class="icon icon-cart-plus" ng-click="WidgetAddToCart.proceedToCart(WidgetAddToCart.item.id)"></span>
+                        <span class="icon icon-cart-plus" ng-click="WidgetAddToCart.proceedToCart(WidgetAddToCart.currentAddedItemInCart.Variant || WidgetAddToCart.item)"></span>
                     </a>
                 </div>
             </div>
@@ -32,12 +32,12 @@
             <hr class="none">
             <div class="item clearfix row">
                 <div class="labels col-xs-3 padding-right-zero pull-left margin-top-five">
-                    <span>{{WidgetAddToCart.currentAddedItemInCart.Variant.name|| 'Variant'}}</span>
+                    <span>{{WidgetAddToCart.currentAddedItemInCart.Variant.attributes[0].name|| 'Variant'}}</span>
                 </div>
                 <div class="main col-xs-9 pull-right">
                     <div class="dropdown" dropdown>
                         <button class="btn btn-default text-left dropdown-toggle" data-toggle="dropdown" dropdown-toggle aria-expanded="true">
-                            <span class="pull-left">{{WidgetAddToCart.currentAddedItemInCart.Variant.option||WidgetAddToCart.item.title}}</span>
+                            <span class="pull-left">{{WidgetAddToCart.currentAddedItemInCart.Variant.attributes[0].option||WidgetAddToCart.item.title}}</span>
                             <span class="chevron icon-chevron-down pull-right"></span>
                         </button>
                         <ul class="dropdown-menu extended" role="menu">
@@ -52,7 +52,7 @@
                     <a class="btn btn-danger stretch text-center transition-third" ng-click="WidgetAddToCart.cancelClick()">Cancel</a>
                 </div>
                 <div class="col-xs-6 pull-right padding-left-five">
-                    <a class="btn btn-primary stretch text-center transition-third" ng-click="WidgetAddToCart.proceedToCart(WidgetAddToCart.item.id)">Proceed</a>
+                    <a class="btn btn-primary stretch text-center transition-third" ng-click="WidgetAddToCart.proceedToCart(WidgetAddToCart.currentAddedItemInCart.Variant || WidgetAddToCart.item)">Proceed</a>
                 </div>
             </div>
         </div>

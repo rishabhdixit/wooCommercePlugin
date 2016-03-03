@@ -4,37 +4,16 @@
     </div>
     <div class="main col-md-9 pull-right">
         <div class="dropdown" dropdown>
-            <button class="btn btn-default text-left dropdown-toggle" data-toggle="dropdown" dropdown-toggle aria-expanded="true">
-                <span class="pull-left">$ - USD, AUD, NZD, CAD, Peso, Real, etc.</span>
+            <button class="btn btn-default text-left dropdown-toggle"
+                    data-toggle="dropdown" dropdown-toggle aria-expanded="true">
+                <span class="pull-left"><span ng-bind-html="SettingsHome.convertHtml(SettingsHome.data.settings.currency.symbol||SettingsHome.currency[0].symbol)"></span>&nbsp;&nbsp;&nbsp;&nbsp;{{SettingsHome.data.settings.currency.name||SettingsHome.currency[0].name}}</span>
                 <span class="chevron icon-chevron-down pull-right"></span>
-            </button>
+            </button  >
             <ul class="dropdown-menu extended" role="menu">
-                <li>
-                    <a href="" tabindex="-1">&euro; - Euro</a>
-                </li>
-                <li>
-                    <a href="" tabindex="-1">&#165; - Yuan and Yen</a>
-                </li>
-                <li>
-                    <a href="" tabindex="-1">DM - Duetsche Mark</a>
-                </li>
-                <li>
-                    <a href="" tabindex="-1">&#8355; - Franc</a>
-                </li>
-                <li>
-                    <a href="" tabindex="-1">&#163; - Pound</a>
-                </li>
-                <li>
-                    <a href="" tabindex="-1">&#8356; - Lira</a>
-                </li>
-                <li>
-                    <a href="" tabindex="-1">&#x20bd; - Rouble</a>
-                </li>
-                <li>
-                    <a href="" tabindex="-1">SFr - Switz Franc</a>
+                <li ng-repeat="currency in SettingsHome.currency">
+                    <a tabindex="-1"  class="transition-third" ng-click="SettingsHome.changeCurrency(currency)"><span ng-bind-html="SettingsHome.convertHtml(currency.symbol)"></span>&nbsp;&nbsp;&nbsp;&nbsp;{{currency.name}}</a>
                 </li>
             </ul>
         </div>
-
     </div>
 </div>

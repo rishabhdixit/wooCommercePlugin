@@ -19,22 +19,6 @@
             return $sce.trustAsHtml(html);
         };
 
-        var getCart = function (storeURL) {
-          console.log("^^^^^^^^^^^^^^^^^^^^^^lkkklk");
-          Buildfire.spinner.show();
-          var success = function (result) {
-              Buildfire.spinner.hide();
-              console.log("^^^^^^^^^^^^^^^^^^^^^^^vvvvv", result);
-              WidgetUpdateCart.cartUpdated = result;
-              $rootScope.cart = WidgetUpdateCart.cartUpdated;
-            }
-            , error = function (err) {
-              Buildfire.spinner.hide();
-              console.error('Error In Fetching cart details', err);
-            };
-          ECommerceSDK.getCart(storeURL).then(success, error);
-        };
-
         var getProduct = function (storeURL, consumerKey, consumerSecret, id) {
           Buildfire.spinner.show();
           var success = function (result) {

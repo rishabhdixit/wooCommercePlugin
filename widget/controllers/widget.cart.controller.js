@@ -17,38 +17,14 @@
         };
 
         WidgetCart.removeItemFromCart = function (item) {
-          var success = function (result) {
-            var index = $rootScope.cart.items.indexOf(item);
-            if (index != -1) {
-              $rootScope.cart.items.splice(index, 1);
-            }
-            if ($rootScope.cart.item_count) {
-              $rootScope.cart.item_count = $rootScope.cart.item_count - item.quantity;
-            }
-            if ($rootScope.cart.total_price) {
-              $rootScope.cart.total_price = $rootScope.cart.total_price - (item.quantity * item.price);
-            }
-          };
-
-          var error = function (error) {
-            console.log("Error removing item from cart:", error);
-          };
-
-          ECommerceSDK.updateCartItem(WidgetCart.data.content.storeURL, item.variant_id, 0).then(success, error);
+          $rootScope.cart.items.forEach(function (cartItem, index) {
+              if(cartItem.id == item.id) {
+                  $rootScope.cart.items.splice(index, 1);
+              }
+          })
         };
 
         var getCart = function (storeURL) {
-          /*Buildfire.spinner.show();
-          var success = function (result) {
-              Buildfire.spinner.hide();
-              console.log("^^^^^^^^^^^^^^^^^^^^^^^", result);
-              $rootScope.cart = result;
-            }
-            , error = function (err) {
-              Buildfire.spinner.hide();
-              console.error('Error In Fetching cart details', err);
-            };
-          ECommerceSDK.getCart(storeURL).then(success, error);*/
             var total_price = 0;
             var total_products = 0;
             $rootScope.cart.items.forEach(function (item) {
@@ -129,22 +105,7 @@
         };
 
         WidgetCart.checkoutCart = function () {
-          Buildfire.spinner.show();
-          var success = function (result) {
-              Buildfire.spinner.hide();
-              console.log("#########################################", result);
-              ViewStack.push({
-                template: 'Checkout',
-                params: {
-                  url: result
-                }
-              });
-            }
-            , error = function (err) {
-              Buildfire.spinner.hide();
-              console.error('Error while cart checkout', JSON.parse(JSON.stringify(err)));
-            };
-          ECommerceSDK.checkoutCart(WidgetCart.data.content.storeURL).then(success, error);
+
         };
 
         $scope.$on("$destroy", function () {

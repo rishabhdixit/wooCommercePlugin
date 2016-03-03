@@ -61,9 +61,9 @@ app.get('/', function (req, res) {
 
 app.post('/initialize', function (req, res) {
     WooCommerce = new WooCommerceAPI({
-        url: req.body.storeURL, // Your store URL ('http://kmtabish.com/wp')
-        consumerKey: req.body.consumerKey, // Your consumer key ('ck_8324bff3206f34928f5811540599e3166a59c091')
-        consumerSecret: req.body.consumerSecret, // Your consumer secret ('cs_5aac7043dfe691b4a60db9a74c343c7744ef5a33')
+        url: req.body.storeURL,
+        consumerKey: req.body.consumerKey,
+        consumerSecret: req.body.consumerSecret,
         version: 'v3' // WooCommerce API version
     });
     if(WooCommerce) {
@@ -129,7 +129,7 @@ app.get('/productCategories', function (req, res) {
     var url = req.query && req.query.pageSize && req.query.pageNumber ? 'products/categories?filter[limit]=' + req.query.pageSize + '&page=' + req.query.pageNumber : 'products/categories';
     console.log('url is >>>>>>>>>>>', url);
     WooCommerce.get(url, function(err, data, response) {
-        console.log('LLLLLLLLLLL', err, response);
+        console.log('error and response is : ', err, response);
         response = response && JSON.parse(response);
         if(err) {
             res.send({

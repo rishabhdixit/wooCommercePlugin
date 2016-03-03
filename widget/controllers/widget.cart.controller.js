@@ -114,15 +114,16 @@
 
         WidgetCart.updateCart = function(item){
           $rootScope.cartItemToUpdate={
-            variantId : item.variant_id,
-            variant: item.variant_title,
-            quantity:item.quantity,
-            data:item
+            variantId : item.id,
+            variant: item.variant_title || item.title,
+            quantity: item.quantity,
+            all_parent_variations: item.all_parent_variations,
+            data: item
           };
           ViewStack.push({
             template: 'Update_Cart_Item',
             params: {
-              handle: item.handle
+              id: item.id
             }
           });
         };

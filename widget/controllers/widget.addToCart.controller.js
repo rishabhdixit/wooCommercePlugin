@@ -109,6 +109,7 @@
                 item.quantity = WidgetAddToCart.quantity;
                 item.product_title = WidgetAddToCart.item.title;
                 item.variant_title = WidgetAddToCart.currentAddedItemInCart.Variant && WidgetAddToCart.currentAddedItemInCart.Variant.attributes && WidgetAddToCart.currentAddedItemInCart.Variant.attributes.length && WidgetAddToCart.currentAddedItemInCart.Variant.attributes[0].option;
+                item.all_parent_variations = WidgetAddToCart.item && WidgetAddToCart.item && WidgetAddToCart.item.variations;
             }
             if($rootScope.cart && $rootScope.cart.items && $rootScope.cart.items.length) {
                 $rootScope.cart.items.forEach(function (cartItem) {

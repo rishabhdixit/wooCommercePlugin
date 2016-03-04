@@ -35,5 +35,8 @@
     .constant('PAGINATION', {
       sectionsCount: 10,
       itemsCount: 10
+    })
+    .constant('SERVER_URL', {
+        link: "http://proxy.buildfire.com"
     });
 })(window.angular);

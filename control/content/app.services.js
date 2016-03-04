@@ -106,8 +106,8 @@
           }
         }
       }])
-      .factory('WooCommerceSDK', ['$q', 'STATUS_CODE', 'STATUS_MESSAGES', '$http',
-          function ($q, STATUS_CODE, STATUS_MESSAGES, $http) {
+      .factory('WooCommerceSDK', ['$q', 'STATUS_CODE', 'STATUS_MESSAGES', 'SERVER_URL', '$http',
+          function ($q, STATUS_CODE, STATUS_MESSAGES, SERVER_URL, $http) {
               var validateStore = function (storeURL, consumerKey, consumerSecret) {
                   var deferred = $q.defer();
                   var _url = '';
@@ -117,7 +117,7 @@
                           message: STATUS_MESSAGES.UNDEFINED_DATA
                       }));
                   } else {
-                        $http.post('http://localhost:3000/initialize' , {
+                        $http.post(SERVER_URL.link + '/initialize' , {
                             storeURL: storeURL,
                             consumerKey: consumerKey,
                             consumerSecret: consumerSecret

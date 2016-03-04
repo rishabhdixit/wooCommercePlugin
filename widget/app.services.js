@@ -145,8 +145,8 @@
           }
         }
       }])
-      .factory('WooCommerceSDK', ['$q', 'STATUS_CODE', 'STATUS_MESSAGES', 'PAGINATION', '$http',
-          function ($q, STATUS_CODE, STATUS_MESSAGES, PAGINATION, $http) {
+      .factory('WooCommerceSDK', ['$q', 'STATUS_CODE', 'STATUS_MESSAGES', 'PAGINATION', 'SERVER_URL', '$http',
+          function ($q, STATUS_CODE, STATUS_MESSAGES, PAGINATION, SERVER_URL, $http) {
               var getSections = function (storeURL, consumerKey, consumerSecret, pageNumber) {
                   var deferred = $q.defer();
                   var _url = '';
@@ -156,7 +156,7 @@
                           message: STATUS_MESSAGES.UNDEFINED_DATA
                       }));
                   } else {
-                      $http.get('http://localhost:3000/productCategories', {
+                      $http.get(SERVER_URL.link + '/productCategories', {
                           params: {
                               pageSize: PAGINATION.sectionsCount,
                               pageNumber: pageNumber || 1
@@ -183,7 +183,7 @@
                           message: STATUS_MESSAGES.UNDEFINED_DATA
                       }));
                   } else {
-                      $http.get('http://localhost:3000/getProductsByCategory', {
+                      $http.get(SERVER_URL.link + '/getProductsByCategory', {
                           params: {
                               slug: slug,
                               pageNumber: pageNumber || 1,
@@ -211,7 +211,7 @@
                           message: STATUS_MESSAGES.UNDEFINED_DATA
                       }));
                   } else {
-                      $http.get('http://localhost:3000/getProducts', {
+                      $http.get(SERVER_URL.link + '/getProducts', {
                           params: {
                               id: id
                           }

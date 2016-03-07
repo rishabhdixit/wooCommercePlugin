@@ -33,6 +33,6 @@
             ]
         })
         .constant('SERVER_URL', {
-            link: "http://localhost:3000"
+            link: "http://proxy.buildfire.com"
         });
 })(window.angular);

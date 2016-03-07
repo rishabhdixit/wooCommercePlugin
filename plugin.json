@@ -1,8 +1,9 @@
 {
-  "author":"[Your Name here]"
-,"pluginName":"[Your Plugin Name here]"
-,"pluginDescription":"[A short description of what your plugin does]"
-,"supportEmail":"[Your support Email]"
+  "author":"Buildfire"
+,"pluginName":"WooCommerce"
+,"pluginDescription":"WooCommerce Plugin"
+,"supportEmail":"support@buildfire.com"
+,"pluginIcon": "icon.png"
 ,"control":{
   "content":{
     "enabled":true

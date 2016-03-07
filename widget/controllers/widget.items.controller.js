@@ -44,10 +44,10 @@
           WidgetItems.noItemFound = false;
           var success = function (result) {
               Buildfire.spinner.hide();
-              console.log("...........................", result.data);
+              console.log("...........................", WidgetItems.pageNumber, result.data);
               WidgetItems.items = WidgetItems.items.length ? WidgetItems.items.concat(result.data.products) : result.data.products;
               WidgetItems.pageNumber = WidgetItems.pageNumber + 1;
-              if (result.length == PAGINATION.itemsCount) {
+              if (result.data.products.length == PAGINATION.itemsCount) {
                 WidgetItems.busy = false;
               }
               WidgetItems.noItemFound = !result.data.products.length;

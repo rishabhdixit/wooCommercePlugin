@@ -24,15 +24,15 @@
         })
         .constant('LAYOUTS', {
             itemListLayout: [
-                {name: "itemlistlayout1"},
-                {name: "itemlistlayout2"}
+                {name: "Item_List_Layout_1"},
+                {name: "Item_List_Layout_2"}
             ],
             sectionListLayout: [
-                {name: "sectionlistlayout1"},
-                {name: "sectionlistlayout2"}
+                {name: "Section_List_Layout_1"},
+                {name: "Section_List_Layout_2"}
             ]
         })
         .constant('SERVER_URL', {
-            link: "http://proxy.buildfire.com"
+            link: "http://localhost:3000"
         });
 })(window.angular);

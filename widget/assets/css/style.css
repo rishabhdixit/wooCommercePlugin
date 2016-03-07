@@ -556,3 +556,6 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
 .backgroundColorTheme{
 	box-shadow:0 0 0 1px #ccc inset;
 }
+.setScrollHeight {
+    height: 570px !important;
+}

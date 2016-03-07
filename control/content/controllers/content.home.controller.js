@@ -71,9 +71,9 @@
                                     ContentHome.storeVerifySuccess = false;
                                 }, 3000);
                                 ContentHome.storeVerifyFailure = false;
-                                ContentHome.data.content.storeURL = ContentHome.storeURL;
-                                ContentHome.data.content.consumerKey = ContentHome.consumerKey;
-                                ContentHome.data.content.consumerSecret = ContentHome.consumerSecret;
+                                ContentHome.data.content.storeURL = ContentHome.storeURL || ContentHome.data.content.storeURL;
+                                ContentHome.data.content.consumerKey = ContentHome.consumerKey || ContentHome.data.content.consumerKey;
+                                ContentHome.data.content.consumerSecret = ContentHome.consumerSecret || ContentHome.data.content.consumerSecret;
                             }
                             else {
                                 ContentHome.storeVerifyFailure = true;
@@ -139,9 +139,10 @@
                                 ContentHome.storeURL = ContentHome.data.content.storeURL;
                             if (ContentHome.data.content.consumerKey)
                                 ContentHome.consumerKey = ContentHome.data.content.consumerKey;
-                            if (ContentHome.data.content.consumerSecret)
+                            if (ContentHome.data.content.consumerSecret) {
                                 ContentHome.consumerSecret = ContentHome.data.content.consumerSecret;
-
+                                ContentHome.verifyStore();
+                            }
                             updateMasterItem(ContentHome.data);
                             if (tmrDelay)clearTimeout(tmrDelay);
                         }

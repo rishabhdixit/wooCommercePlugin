@@ -37,6 +37,6 @@
       itemsCount: 10
     })
     .constant('SERVER_URL', {
-        link: "http://proxy.buildfire.com"
+        link: "http://localhost:3000"
     });
 })(window.angular);

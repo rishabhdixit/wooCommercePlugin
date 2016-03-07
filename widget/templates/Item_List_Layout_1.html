@@ -2,7 +2,7 @@
     <div class="ecommerce-plugin layout3 scrollable infinite-scroll-parent" ng-if="WidgetItems.data">
         <div class="">
             <div class="list-layout has-cart" ng-if="WidgetItems.items">
-                <div infinite-scroll="WidgetItems.loadMore()" infinite-scroll-distance="1" data-infinite-container=".infinite-scroll-parent" infinite-scroll-disabled="WidgetItems.busy">
+                <div class="setScrollHeight" infinite-scroll="WidgetItems.loadMore()" infinite-scroll-distance="0" data-infinite-container=".infinite-scroll-parent" infinite-scroll-disabled="WidgetItems.busy">
                     <div class="list-item" ng-repeat="item in WidgetItems.items">
                         <div class="list-item-media text-left overflow-hidden">
                             <div class="list-media-holder square-icon pull-left">

@@ -56,9 +56,12 @@
         };
 
         WidgetSingle.goToCart = function () {
-          ViewStack.push({
-            template: 'Shopping_Cart'
-          });
+            ViewStack.push({
+                template: 'Checkout',
+                params: {
+                    url: WidgetSingle.data.content.storeURL + '/cart'
+                }
+            });
         };
 
         var init = function () {

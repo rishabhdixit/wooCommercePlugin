@@ -47,7 +47,10 @@
 
                 WidgetHome.goToCart = function () {
                     ViewStack.push({
-                        template: 'Shopping_Cart'
+                        template: 'Checkout',
+                        params: {
+                            url: WidgetHome.data.content.storeURL + '/cart'
+                        }
                     });
                 };
 

@@ -95,6 +95,9 @@
 
                 };
 
+                ContentHome.gotToWooCommerce = function () {
+                    window.open('https://wordpress.org/plugins/woocommerce/', '_blank');
+                };
 
                 /*
                  * Method to remove store name in case user clears the field

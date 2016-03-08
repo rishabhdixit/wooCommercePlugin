@@ -1,0 +1,23 @@
+{
+  "author":"Buildfire"
+,"pluginName":"WooCommerce Integration"
+,"pluginDescription":"The world's favorite eCommerce solution that gives you complete control to sell anything."
+,"supportEmail":"support@buildfire.com"
+,"pluginIcon": "icon.png"
+,"control":{
+  "content":{
+    "enabled":true
+  }
+, "design":{
+    "enabled":true
+  }
+, "settings":{
+    "enabled":true
+  }
+}
+,"widget":{
+
+},
+  "features" : [],
+  "languages" : ["en"]
+}

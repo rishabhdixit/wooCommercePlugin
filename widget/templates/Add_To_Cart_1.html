@@ -1,0 +1,66 @@
+<div class="holder padding-zero has-bottom z-index-4" ng-controller="WidgetAddToCartCtrl as WidgetAddToCart">
+    <div class="ecommerce-plugin ">
+        <div class="media-center-banner plugin-banner clearfix border-bottom-grey">
+            <div id="carousel3" ng-if="WidgetAddToCart.item.images.length" build-fire-carousel3=""></div>
+            <div class="plugin-slider has-info-bar-double text-center" ng-if="!WidgetAddToCart.item.images.length">
+                <div class="plugin-slide">
+                    <img src="assets/images/16x9.png">
+                </div>
+            </div>
+            <div class="info-bar padding-top-five padding-bottom-five bg-primary">
+                <div class="col-xs-10 pull-left">
+                    <p class="margin-zero whiteTheme">{{WidgetAddToCart.item.title}}</p>
+                    <p class="margin-zero whiteTheme">	 <span class="whiteTheme" ng-bind-html="WidgetAddToCart.safeHtml(WidgetAddToCart.data.settings.currency.symbol||'$')"></span>&nbsp; {{WidgetAddToCart.currentAddedItemInCart.Variant.price||WidgetAddToCart.item.price}}
+                    </p>
+                </div>
+                <div class="col-xs-2 pull-right right-icon">
+                    <a class="padded-icon pull-right border-radius-three text-center" style="background:#fff;">
+                        <span class="icon icon-cart-plus" ng-click="WidgetAddToCart.proceedToCart(WidgetAddToCart.currentAddedItemInCart.Variant || WidgetAddToCart.item)"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="padded">
+            <div class="item clearfix row">
+                <div class="labels col-xs-3 padding-right-zero pull-left margin-top-five">
+                    <span>Quantity</span>
+                </div>
+                <div class="main col-xs-9 pull-right">
+                    <input type="number" class="form-control" placeholder="1" min="1" ng-model="WidgetAddToCart.quantity" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                </div>
+            </div>
+            <hr class="none">
+            <div class="item clearfix row">
+                <div class="labels col-xs-3 padding-right-zero pull-left margin-top-five">
+                    <span>{{WidgetAddToCart.currentAddedItemInCart.Variant.attributes[0].name|| 'Variant'}}</span>
+                </div>
+                <div class="main col-xs-9 pull-right">
+                    <div class="dropdown" dropdown>
+                        <button class="btn btn-default text-left dropdown-toggle" data-toggle="dropdown" dropdown-toggle aria-expanded="true">
+                            <span class="pull-left">{{WidgetAddToCart.currentAddedItemInCart.Variant.attributes[0].option||WidgetAddToCart.item.title}}</span>
+                            <span class="chevron icon-chevron-down pull-right"></span>
+                        </button>
+                        <ul class="dropdown-menu extended" role="menu">
+                            <li ng-repeat="variant in WidgetAddToCart.item.variations" ><a tabindex="-1" ng-click="WidgetAddToCart.selectVariant(variant)">{{variant.attributes && variant.attributes.length > 0 && variant.attributes[0].option}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <hr class="none">
+            <div class="item clearfix row">
+                <div class="col-xs-6 pull-left padding-right-five">
+                    <a class="btn btn-danger stretch text-center transition-third" ng-click="WidgetAddToCart.cancelClick()">Cancel</a>
+                </div>
+                <div class="col-xs-6 pull-right padding-left-five">
+                    <a class="btn btn-primary stretch text-center transition-third" ng-click="WidgetAddToCart.proceedToCart(WidgetAddToCart.currentAddedItemInCart.Variant || WidgetAddToCart.item)">Proceed</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom fixed-bottom border-top-grey clearfix bottom-zero">
+        <div class="col-xs-12 pull-left text-center">
+            <a class="whiteTheme bg-primary transition-third" href="javascript:void(0);"
+               ng-click="WidgetAddToCart.goToCart()">Go to Cart</a>
+        </div>
+    </div>
+</div>

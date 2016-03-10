@@ -16,7 +16,8 @@
                      ng-repeat="section in WidgetHome.sections">
                     <div class="media-holder border-radius-three overflow-hidden">
                         <div class="media-img-holder">
-                            <img ng-if="!section.image" src="assets/images/239x100.png" ng-click="WidgetHome.showItems(section.slug)">
+                            <img ng-if="!section.image"
+                                 src="assets/.images/239x100.png" ng-click="WidgetHome.showItems(section.slug)">
                             <img load-image="239x100"
                                  data-final-src="{{section.image | getImageUrl : 640 : 380}}"
                                  ng-if="section.image" ng-click="WidgetHome.showItems(section.slug)">

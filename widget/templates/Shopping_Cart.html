@@ -6,7 +6,8 @@
                 <div class="list-item" ng-repeat="item in cart.items">
                     <div class="list-item-media text-left overflow-hidden">
                         <div class="list-media-holder square-icon pull-left">
-                            <img ng-hide="(item.image || item.images)" src="assets/images/1x1.png">
+                            <img ng-hide="(item.image || item.images)"
+                                 src="assets/.images/1x1.png">
                             <img ng-show="(item.image || item.images)"
                                  load-image="1x1"
                                  data-final-src="{{(item.image[0].src || item.images[0].src) |getImageUrl:70:70}}">

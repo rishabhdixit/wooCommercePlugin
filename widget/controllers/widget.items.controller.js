@@ -9,7 +9,7 @@
         WidgetItems.listeners = {};
         WidgetItems.data = null;
         WidgetItems.items = [];
-        WidgetItems.busy = false;
+        WidgetItems.busy = true;
         WidgetItems.pageNumber = 1;
         WidgetItems.noItemFound = false;
         WidgetItems.currentView = ViewStack.getCurrentView();
@@ -87,28 +87,34 @@
          */
 
         var init = function () {
-          var success = function (result) {
-              console.log("--------------------", result);
-              WidgetItems.data = result.data;
-              if (!WidgetItems.data.design)
-                WidgetItems.data.design = {};
-              if (!WidgetItems.data.content)
-                WidgetItems.data.content = {};
-              if (!WidgetItems.data.settings)
-                WidgetItems.data.settings = {};
-              if (WidgetItems.data.content.storeURL) {
-                currentStoreURL = WidgetItems.data.content.storeURL;
-              }
-              if (!WidgetItems.data.design.itemListLayout) {
-                WidgetItems.data.design.itemListLayout = LAYOUTS.itemListLayout[0].name;
-              }
-              currentItemListLayout = WidgetItems.data.design.itemListLayout;
-            }
-            , error = function (err) {
-              console.error('Error while getting data', err);
-            };
-          DataStore.get(TAG_NAMES.WOOCOMMERCE_INFO).then(success, error);
-        };
+              var success = function (result) {
+                      console.log("--------------------", result);
+                      WidgetItems.data = result.data;
+                      if (!WidgetItems.data.design)
+                          WidgetItems.data.design = {};
+                      if (!WidgetItems.data.content)
+                          WidgetItems.data.content = {};
+                      if (!WidgetItems.data.settings)
+                          WidgetItems.data.settings = {};
+                      if (WidgetItems.data.content.storeURL) {
+                          currentStoreURL = WidgetItems.data.content.storeURL;
+                      }
+                      if (!WidgetItems.data.design.itemListLayout) {
+                          WidgetItems.data.design.itemListLayout = LAYOUTS.itemListLayout[0].name;
+                      }
+                      currentItemListLayout = WidgetItems.data.design.itemListLayout;
+                      if (WidgetItems.data && WidgetItems.currentView.params.slug) {
+                          getItems(WidgetItems.data.content.storeURL, WidgetItems.data.content.consumerKey, WidgetItems.data.content.consumerSecret, WidgetItems.currentView.params.slug);
+                      }
+                      else {
+                          WidgetItems.items = [];
+                      }
+                  }
+                  , error = function (err) {
+                      console.error('Error while getting data', err);
+                  };
+              DataStore.get(TAG_NAMES.WOOCOMMERCE_INFO).then(success, error);
+          };
 
         WidgetItems.changeItemView = function (itemLayout) {
           if (itemLayout == 'itemLayoutList') {

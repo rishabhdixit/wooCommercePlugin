@@ -8,7 +8,7 @@
                 var WidgetHome = this;
                 WidgetHome.data = null;
                 WidgetHome.sections = [];
-                WidgetHome.busy = false;
+                WidgetHome.busy = true;
                 WidgetHome.pageNumber = 1;
                 //create new instance of buildfire carousel viewer
                 WidgetHome.view = null;
@@ -111,6 +111,10 @@
                             } else {
                                 $rootScope.backgroundImage = WidgetHome.data.design.itemDetailsBgImage;
                             }
+                            if (WidgetHome.data.content.storeURL && WidgetHome.data.content.consumerKey && WidgetHome.data.content.consumerSecret)
+                                getSections(WidgetHome.data.content.storeURL, WidgetHome.data.content.consumerKey, WidgetHome.data.content.consumerSecret);
+                            else
+                                WidgetHome.sections = [];
                         }
                         , error = function (err) {
                             console.error('Error while getting data', err);

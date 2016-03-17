@@ -96,7 +96,7 @@
                 };
 
                 ContentHome.gotToWooCommerce = function () {
-                    window.open('https://wordpress.org/plugins/woocommerce/', '_blank');
+                    window.open('https://docs.woothemes.com/document/woocommerce-rest-api/#section-3', '_blank');
                 };
 
                 /*

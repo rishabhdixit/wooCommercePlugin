@@ -72,7 +72,7 @@
                             console.log("********************************", result.data);
                             WidgetHome.sections = WidgetHome.sections.length ? WidgetHome.sections.concat(result.data.product_categories) : result.data.product_categories;
                             WidgetHome.pageNumber = WidgetHome.pageNumber + 1;
-                            if (result.data.product_categories.length == PAGINATION.sectionsCount) {
+                            if (result && result.data && result.data.product_categories && (result.data.product_categories.length == PAGINATION.sectionsCount)) {
                                 WidgetHome.busy = false;
                             }
                         }

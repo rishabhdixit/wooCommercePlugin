@@ -22,8 +22,8 @@
                                  data-final-src="{{section.image | getImageUrl : 640 : 380}}"
                                  ng-if="section.image" ng-click="WidgetHome.showItems(section.slug)">
                         </div>
-                        <div
-                                class="info-bar titleBarBackgroundTheme padding-left-ten text-center padding-right-ten">
+                        <div class="info-bar titleBarBackgroundTheme padding-left-ten text-center padding-right-ten cursor"
+                             ng-click="WidgetHome.showItems(section.slug)">
                             <p class="ellipsis margin-zero titleBarTextAndIcons"><a class="titleBarTextAndIcons"
                                                                                     href="javascript:void(0);"
                                                                                     ng-click="WidgetHome.showItems(section.slug)">{{section

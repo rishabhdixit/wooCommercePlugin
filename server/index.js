@@ -67,10 +67,7 @@ app.post('/initialize', function (req, res) {
         version: 'v3' // WooCommerce API version
     });
     if(WooCommerce) {
-        res.send({
-            data: 'Successfully Initialized',
-            status: 200
-        })
+        getProductCategories(req, res);
     } else {
         res.send({
             data: 'Not Initialized',
@@ -126,28 +123,7 @@ app.get('/getProducts', function (req, res) {
 });
 
 app.get('/productCategories', function (req, res) {
-    var url = req.query && req.query.pageSize && req.query.pageNumber ? 'products/categories?filter[limit]=' + req.query.pageSize + '&page=' + req.query.pageNumber : 'products/categories';
-    console.log('url is >>>>>>>>>>>', url);
-    WooCommerce.get(url, function(err, data, response) {
-        console.log('error and response is : ', err, response);
-        response = response && JSON.parse(response);
-        if(err) {
-            res.send({
-                data: err,
-                status: 500
-            });
-        } else if(response && response.errors && response.errors.length > 0 && response.errors[0].code) {
-            res.status(getErrorStatusCode(response.errors[0].code)).send({
-                data: response,
-                status: getErrorStatusCode(response.errors[0].code)
-            });
-        } else {
-            res.send({
-                data: response,
-                status: 200
-            });
-        }
-    });
+    getProductCategories(req, res);
 });
 
 app.get('/getProductsByCategory', function (req, res) {
@@ -173,6 +149,31 @@ app.get('/getProductsByCategory', function (req, res) {
         }
     })
 });
+
+function getProductCategories(req, res) {
+    var url = req.query && req.query.pageSize && req.query.pageNumber ? 'products/categories?filter[limit]=' + req.query.pageSize + '&page=' + req.query.pageNumber : 'products/categories';
+    console.log('url is >>>>>>>>>>>', url);
+    WooCommerce.get(url, function (err, data, response) {
+        response = response && !(/<[a-z][\s\S]*>/i.test(JSON.stringify(response))) && JSON.parse(response);
+        console.log('error and response is : ', err, response);
+        if (err || !response) {
+            res.send({
+                data: err || response,
+                status: 500
+            });
+        } else if (response && response.errors && response.errors.length > 0 && response.errors[0].code) {
+            res.status(getErrorStatusCode(response.errors[0].code)).send({
+                data: response,
+                status: getErrorStatusCode(response.errors[0].code)
+            });
+        } else {
+            res.send({
+                data: response,
+                status: 200
+            });
+        }
+    });
+}
 
 /**
  * Different setup for 'development' and 'production' modes

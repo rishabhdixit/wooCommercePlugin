@@ -64,7 +64,7 @@
                  * */
                 ContentHome.verifyStore = function () {
                     var success = function (result) {
-                            if (result) {
+                            if (result && result.status != 500) {
                                 ContentHome.storeVerifySuccess = true;
                                 $timeout(function () {
                                     ContentHome.storeVerifySuccess = false;

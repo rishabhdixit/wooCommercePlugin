@@ -30,7 +30,7 @@
                 </div>
             </div>
             <hr class="none">
-            <div class="item clearfix row">
+            <div class="item clearfix row" ng-if="WidgetAddToCart.item.variations && WidgetAddToCart.item.variations.length">
                 <div class="labels col-xs-3 padding-right-zero pull-left margin-top-five">
                     <span>{{WidgetAddToCart.currentAddedItemInCart.Variant.attributes[0].name|| 'Variant'}}</span>
                 </div>

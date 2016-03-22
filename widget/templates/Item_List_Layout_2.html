@@ -1,5 +1,6 @@
 <div class="holder padding-zero has-bottom has-layout-bottom sticky-bottom-menu clearfix">
-    <div class="ecommerce-plugin layout1 infinite-scroll-parent scrollable" ng-if="WidgetItems.data">
+    <div class="ecommerce-plugin layout1 infinite-scroll-parent scrollable"
+         ng-if="WidgetItems.data" style="height: calc(100% - 55px) !important;">
         <div class="margin-top-ten">
             <div class="media-layout" ng-if="WidgetItems.items">
                 <div infinite-scroll="WidgetItems.loadMore()" infinite-scroll-distance="0" data-infinite-container=".infinite-scroll-parent" infinite-scroll-disabled="WidgetItems.busy">

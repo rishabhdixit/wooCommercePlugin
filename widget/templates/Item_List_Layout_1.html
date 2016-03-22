@@ -1,5 +1,6 @@
 <div class="holder padding-zero has-bottom has-layout-bottom sticky-bottom-menu clearfix">
-    <div class="ecommerce-plugin layout3 scrollable infinite-scroll-parent" ng-if="WidgetItems.data">
+    <div class="ecommerce-plugin layout3 scrollable infinite-scroll-parent"
+         ng-if="WidgetItems.data" style="height: calc(100% - 55px) !important;">
         <div class="">
             <div class="list-layout has-cart" ng-if="WidgetItems.items">
                 <div infinite-scroll="WidgetItems.loadMore()" infinite-scroll-distance="1" data-infinite-container=".infinite-scroll-parent" infinite-scroll-disabled="WidgetItems.busy">
@@ -34,11 +35,19 @@
     <div class="bottom fixed-bottom border-top-grey clearfix bottom-zero">
         <div>
             <div class="extra-links">
-                <a ng-click="WidgetItems.changeItemView('itemLayoutList')" class="list-layout bg-primary" style="opacity: 1 !important;">
-                    <span class="icon icon-list whiteTheme"></span>
+                <a ng-click="WidgetItems.changeItemView('itemLayoutList')"
+                   class="list-layout" style="opacity: 1
+                   !important;"
+                   ng-class="{'bg-primary' : (WidgetItems.data.design.itemListLayout != 'Item_List_Layout_1'), 'whiteBackgroundTheme box-shadow' : (WidgetItems.data.design.itemListLayout == 'Item_List_Layout_1')}">
+                    <span class="icon icon-list"
+                          ng-class="{whiteTheme : (WidgetItems.data.design.itemListLayout != 'Item_List_Layout_1'), 'text-primary' : (WidgetItems.data.design.itemListLayout == 'Item_List_Layout_1')}"></span>
                 </a>
-                <a ng-click="WidgetItems.changeItemView('itemLayoutGrid')" class="grid-layout bg-primary" style="opacity: 1 !important;">
-                    <span class="icon icon-border-all1 whiteTheme"></span>
+                <a ng-click="WidgetItems.changeItemView('itemLayoutGrid')"
+                   class="grid-layout" style="opacity: 1
+                   !important;"
+                   ng-class="{'bg-primary' : (WidgetItems.data.design.itemListLayout != 'Item_List_Layout_2'), 'whiteBackgroundTheme box-shadow' : (WidgetItems.data.design.itemListLayout == 'Item_List_Layout_2')}">
+                    <span class="icon icon-border-all1"
+                          ng-class="{whiteTheme : (WidgetItems.data.design.itemListLayout != 'Item_List_Layout_2'), 'text-primary' : (WidgetItems.data.design.itemListLayout == 'Item_List_Layout_2')}"></span>
                 </a>
             </div>
         </div>

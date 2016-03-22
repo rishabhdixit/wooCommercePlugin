@@ -73,12 +73,14 @@
         };
 
         WidgetItems.goToCart = function () {
-            ViewStack.push({
+            /*ViewStack.push({
                 template: 'Checkout',
                 params: {
                     url: WidgetItems.data.content.storeURL + '/cart'
                 }
-            });
+            });*/
+            if (WidgetItems.data && WidgetItems.data.content && WidgetItems.data.content.storeURL)
+                buildfire.navigation.openWindow(WidgetItems.data.content.storeURL + '/cart', "_system");
         };
 
 

@@ -60,7 +60,7 @@
                             url: WidgetHome.data.content.storeURL + '/cart'
                         }
                     });*/
-                  if (WidgetHome.data.content.storeURL)
+                  if (WidgetHome.data && WidgetHome.data.content && WidgetHome.data.content.storeURL)
                     buildfire.navigation.openWindow(WidgetHome.data.content.storeURL + '/cart', "_system");
                 };
 

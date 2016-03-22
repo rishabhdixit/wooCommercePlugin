@@ -144,7 +144,6 @@
                                     ContentHome.consumerKey = ContentHome.data.content.consumerKey;
                                 if (ContentHome.data.content.consumerSecret) {
                                     ContentHome.consumerSecret = ContentHome.data.content.consumerSecret;
-                                    ContentHome.verifyStore();
                                 }
                                 updateMasterItem(ContentHome.data);
                                 if (tmrDelay)clearTimeout(tmrDelay);

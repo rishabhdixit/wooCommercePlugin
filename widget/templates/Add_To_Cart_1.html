@@ -29,7 +29,7 @@
                     <input type="number" class="form-control" placeholder="1" min="1" ng-model="WidgetAddToCart.quantity" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                 </div>
             </div>
-            <hr class="none">
+            <hr class="none" ng-if="WidgetAddToCart.item.variations && WidgetAddToCart.item.variations.length">
             <div class="item clearfix row" ng-if="WidgetAddToCart.item.variations && WidgetAddToCart.item.variations.length">
                 <div class="labels col-xs-3 padding-right-zero pull-left margin-top-five">
                     <span>{{WidgetAddToCart.currentAddedItemInCart.Variant.attributes[0].name|| 'Variant'}}</span>

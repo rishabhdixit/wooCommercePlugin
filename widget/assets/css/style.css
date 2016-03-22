@@ -559,3 +559,6 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
 .setScrollHeight {
     height: 570px !important;
 }
+.cursor {
+    cursor: pointer;
+}

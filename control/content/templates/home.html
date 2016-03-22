@@ -64,7 +64,7 @@
 <div class="item clearfix row">
     <div class="col-md-4 pull-right">
         <button class="btn btn-primary pull-right stretch"
-                ng-disabled="!ContentHome.storeURL && !ContentHome.consumerKey && !ContentHome.consumerSecret" ng-click="ContentHome.verifyStore()">
+                ng-disabled="!ContentHome.storeURL || !ContentHome.consumerKey || !ContentHome.consumerSecret" ng-click="ContentHome.verifyStore()">
             Done</button>
     </div>
     </div>

@@ -102,50 +102,22 @@
         };
 
         WidgetAddToCart.proceedToCart = function (item) {
-            Buildfire.spinner.show();
-            var parentId = item.attributes && item.attributes.length ? WidgetAddToCart.item.id : null;
-            var url;
-            if(parentId) {
-                url = WidgetAddToCart.data.content.storeURL + '/cart/?add-to-cart=' + parentId + '&variation_id=' + item.id + '&quantity=' + WidgetAddToCart.quantity + '&attribute_pa_' + item.attributes[0].slug + '=' + item.attributes[0].option;
-            } else {
-                url = WidgetAddToCart.data.content.storeURL + '/cart/?add-to-cart=' + item.id + '&quantity=' + WidgetAddToCart.quantity;
+          Buildfire.spinner.show();
+          var parentId = item.attributes && item.attributes.length ? WidgetAddToCart.item.id : null;
+          var url;
+          if (parentId) {
+            url = WidgetAddToCart.data.content.storeURL + '/cart/?add-to-cart=' + parentId + '&variation_id=' + item.id + '&quantity=' + WidgetAddToCart.quantity + '&attribute_pa_' + item.attributes[0].slug + '=' + item.attributes[0].option;
+          } else {
+            url = WidgetAddToCart.data.content.storeURL + '/cart/?add-to-cart=' + item.id + '&quantity=' + WidgetAddToCart.quantity;
+          }
+          /*ViewStack.push({
+            template: 'Checkout',
+            params: {
+              url: url
             }
-            ViewStack.push({
-                template: 'Checkout',
-                params: {
-                    url: url
-                }
-            });
-         /* var success = function (result) {
-            console.log("****************************Success************", result);*/
-            /*var flag = 0;
-            if(item) {
-                item.quantity = WidgetAddToCart.quantity;
-                item.product_title = WidgetAddToCart.item.title;
-                item.variant_title = WidgetAddToCart.currentAddedItemInCart.Variant && WidgetAddToCart.currentAddedItemInCart.Variant.attributes && WidgetAddToCart.currentAddedItemInCart.Variant.attributes.length && WidgetAddToCart.currentAddedItemInCart.Variant.attributes[0].option;
-                item.parent_id = WidgetAddToCart.item && WidgetAddToCart.item.id;
-            }
-            if($rootScope.cart && $rootScope.cart.items && $rootScope.cart.items.length) {
-                $rootScope.cart.items.forEach(function (cartItem) {
-                    if(cartItem.id == item.id) {
-                        cartItem.quantity = cartItem.quantity + item.quantity;
-                        flag = 1;
-                    }
-                });
-            }
-            if(!flag) {
-                if ($rootScope.cart && $rootScope.cart.items && $rootScope.cart.items.length > 0) {
-                    $rootScope.cart.items.push(item);
-                } else {
-                    $rootScope.cart = {
-                        items: []
-                    };
-                    $rootScope.cart.items.push(item);
-                }
-            }
-            ViewStack.push({
-              template: 'Shopping_Cart'
-            });*/
+          });*/
+          if (url)
+            buildfire.navigation.openWindow(url, "_system");
         };
 
         WidgetAddToCart.cancelClick = function () {
@@ -156,7 +128,7 @@
           ViewStack.push({
             template: 'Checkout',
             params: {
-                url: WidgetAddToCart.data.content.storeURL + '/cart'
+              url: WidgetAddToCart.data.content.storeURL + '/cart'
             }
           });
         };

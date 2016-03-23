@@ -85,6 +85,16 @@
                     WooCommerceSDK.getSections(storeURL, consumerKey, consumerSecret, WidgetHome.pageNumber).then(success, error);
                 };
 
+                var initialize = function (storeURL, consumerKey, consumerSecret) {
+                    var success = function (response) {
+                        getSections(storeURL, consumerKey, consumerSecret);
+                    };
+                    var error = function (err) {
+                        console.error('Error while initializing from widget side: ', err);
+                    };
+                    WooCommerceSDK.initialize(storeURL, consumerKey, consumerSecret).then(success, error);
+                };
+
                 /*
                  * Fetch user's data from datastore
                  */
@@ -107,14 +117,14 @@
                             if (!WidgetHome.data.design.itemListLayout) {
                                 WidgetHome.data.design.itemListLayout = LAYOUTS.itemListLayout[0].name;
                             }
-                            console.log("WidgetHome.data.design.backgroundImage", WidgetHome.data.design.itemDetailsBgImage)
+                            console.log("WidgetHome.data.design.backgroundImage", WidgetHome.data.design.itemDetailsBgImage);
                             if (!WidgetHome.data.design.itemDetailsBgImage) {
                                 $rootScope.backgroundImage = "";
                             } else {
                                 $rootScope.backgroundImage = WidgetHome.data.design.itemDetailsBgImage;
                             }
                             if (WidgetHome.data.content.storeURL && WidgetHome.data.content.consumerKey && WidgetHome.data.content.consumerSecret)
-                                getSections(WidgetHome.data.content.storeURL, WidgetHome.data.content.consumerKey, WidgetHome.data.content.consumerSecret);
+                                initialize(WidgetHome.data.content.storeURL, WidgetHome.data.content.consumerKey, WidgetHome.data.content.consumerSecret);
                             else
                                 WidgetHome.sections = [];
                         }

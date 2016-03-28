@@ -181,7 +181,10 @@
                       $http.get(SERVER_URL.link + '/productCategories', {
                           params: {
                               pageSize: PAGINATION.sectionsCount,
-                              pageNumber: pageNumber || 1
+                              pageNumber: pageNumber || 1,
+                              storeURL: storeURL,
+                              consumerKey: consumerKey,
+                              consumerSecret: consumerSecret
                           }
                       })
                           .success(function (response) {
@@ -209,7 +212,10 @@
                           params: {
                               slug: slug,
                               pageNumber: pageNumber || 1,
-                              pageSize: PAGINATION.sectionsCount
+                              pageSize: PAGINATION.sectionsCount,
+                              storeURL: storeURL,
+                              consumerKey: consumerKey,
+                              consumerSecret: consumerSecret
                           }
                       })
                           .success(function (response) {
@@ -235,7 +241,10 @@
                   } else {
                       $http.get(SERVER_URL.link + '/getProducts', {
                           params: {
-                              id: id
+                              id: id,
+                              storeURL: storeURL,
+                              consumerKey: consumerKey,
+                              consumerSecret: consumerSecret
                           }
                       })
                           .success(function (response) {

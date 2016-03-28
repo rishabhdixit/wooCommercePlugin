@@ -8,9 +8,6 @@ var express = require('express')
     , env = process.env.NODE_ENV || 'development'
     , server = require('http').createServer(app);
 
-var WooCommerce;
-
-
 var getErrorStatusCode = function (errCode) {
     switch (errCode) {
         case 'woocommerce_api_unsupported_method' :
@@ -26,7 +23,16 @@ var getErrorStatusCode = function (errCode) {
             return 500;
             break;
     }
-}
+};
+
+var getWooCommerceObject = function (storeURL, consumerKey, consumerSecret) {
+    return new WooCommerceAPI({
+        url: storeURL,
+        consumerKey: consumerKey,
+        consumerSecret: consumerSecret,
+        version: 'v3' // WooCommerce API version
+    });
+};
 
 /* To Allow cross-domain Access-Control*/
 var allowCrossDomain = function (req, res, next) {
@@ -60,24 +66,11 @@ app.get('/', function (req, res) {
 });
 
 app.post('/initialize', function (req, res) {
-    WooCommerce = new WooCommerceAPI({
-        url: req.body.storeURL,
-        consumerKey: req.body.consumerKey,
-        consumerSecret: req.body.consumerSecret,
-        version: 'v3' // WooCommerce API version
-    });
-    if(WooCommerce) {
-        getProductCategories(req, res);
-    } else {
-        res.send({
-            data: 'Not Initialized',
-            status: 500
-        });
-    }
-
+    getProductCategories(req, res);
 });
 
 app.get('/getProducts', function (req, res) {
+    var WooCommerce = getWooCommerceObject(req.query.storeURL, req.query.consumerKey, req.query.consumerSecret);
     if(req.query && req.query.id) {
         WooCommerce.get('products/' + req.query.id, function(err, data, response) {
             response = response && JSON.parse(response);
@@ -129,6 +122,7 @@ app.get('/productCategories', function (req, res) {
 app.get('/getProductsByCategory', function (req, res) {
     var url = req.query && req.query.slug ? 'products?filter[category]=' + req.query.slug + '&filter[limit]=' + req.query.pageSize + '&page=' + req.query.pageNumber : 'products/';
     console.log('getProductsByCategory url is:', url);
+    var WooCommerce = getWooCommerceObject(req.query.storeURL, req.query.consumerKey, req.query.consumerSecret);
     WooCommerce.get(url, function (err, data, response) {
         response = response && JSON.parse(response);
         if(err) {
@@ -152,7 +146,11 @@ app.get('/getProductsByCategory', function (req, res) {
 
 function getProductCategories(req, res) {
     var url = req.query && req.query.pageSize && req.query.pageNumber ? 'products/categories?filter[limit]=' + req.query.pageSize + '&page=' + req.query.pageNumber : 'products/categories';
-    console.log('url is >>>>>>>>>>>', url);
+    console.log('url is >>>>>>>>>>>', url, req.query, req.body);
+    var storeURL = req.query.storeURL || req.body.storeURL;
+    var consumerKey = req.query.consumerKey || req.body.consumerKey;
+    var consumerSecret = req.query.consumerSecret || req.body.consumerSecret;
+    var WooCommerce = getWooCommerceObject(storeURL, consumerKey, consumerSecret);
     WooCommerce.get(url, function (err, data, response) {
         response = response && !(/<[a-z][\s\S]*>/i.test(JSON.stringify(response))) && JSON.parse(response);
         console.log('error and response is : ', err, response);

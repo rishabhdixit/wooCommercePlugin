@@ -201,7 +201,7 @@
           }
         });
         WidgetItems.listeners['POP'] = $rootScope.$on('BEFORE_POP', function (e, view) {
-          if (view.template === WidgetItems.data.design.itemListLayout) {
+          if (WidgetItems.data && WidgetItems.data.design && WidgetItems.data.design.itemListLayout === view.template) {
             $scope.$destroy();
           }
         });

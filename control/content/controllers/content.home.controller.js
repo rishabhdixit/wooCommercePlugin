@@ -94,8 +94,20 @@
 
                 };
 
-                ContentHome.gotToWooCommerce = function () {
+                ContentHome.wooCommerceAPIKeysUrl = function () {
                     window.open('https://docs.woothemes.com/document/woocommerce-rest-api/#section-3', '_blank');
+                };
+
+                ContentHome.wooCommerceStepsURL = function () {
+                    window.open('https://docs.woothemes.com/document/start-with-woocommerce-in-5-steps/', '_blank');
+                };
+
+                ContentHome.wooCommerceSetUpURL = function () {
+                    window.open('https://docs.woothemes.com/document/woocommerce-onboarding-wizard/', '_blank');
+                };
+
+                ContentHome.wooCommerceSelfHostURL = function () {
+                    window.open('https://www.bluehost.com/wordpress-woocommerce?ref=woocommercedocs', '_blank');
                 };
 
                 /*

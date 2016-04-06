@@ -6,7 +6,7 @@
                 <div infinite-scroll="WidgetItems.loadMore()" infinite-scroll-distance="0" data-infinite-container=".infinite-scroll-parent" infinite-scroll-disabled="WidgetItems.busy">
                     <div class="media-item col-xs-6 padding-zero " ng-repeat="item in WidgetItems.items">
                         <div class="media-holder">
-                            <div class="media-img-holder">
+                            <div class="media-img-holder" style="min-height: 156px;">
                                 <img ng-hide="item.images[0].src"
                                      src="../../../../styles/media/holder-1x1.png" ng-click="WidgetItems.showItem(item.id)">
                                 <img ng-show="item.images[0].src" load-image="1x1"

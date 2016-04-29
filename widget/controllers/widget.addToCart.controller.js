@@ -7,6 +7,7 @@
       function ($scope, DataStore, TAG_NAMES, WooCommerceSDK, $sce, LAYOUTS, $rootScope, PAGINATION, Buildfire, ViewStack) {
 
         var WidgetAddToCart = this;
+        var breadCrumbFlag = true;
         WidgetAddToCart.listeners = {};
         WidgetAddToCart.quantity = 1;
         WidgetAddToCart.currentAddedItemInCart = {
@@ -17,6 +18,19 @@
         var currentView = ViewStack.getCurrentView();
         console.log("currentView", currentView);
         var currentStoreURL = "";
+
+          buildfire.history.get('pluginBreadcrumbsOnly', function (err, result) {
+              if(result && result.length) {
+                  result.forEach(function(breadCrumb) {
+                      if(breadCrumb.label == 'AddToCart') {
+                          breadCrumbFlag = false;
+                      }
+                  });
+              }
+              if(breadCrumbFlag) {
+                  buildfire.history.push('AddToCart', { elementToShow: 'AddToCart' });
+              }
+          });
 
 
         WidgetAddToCart.safeHtml = function (html) {
@@ -121,7 +135,7 @@
         };
 
         WidgetAddToCart.cancelClick = function () {
-          ViewStack.pop();
+          buildfire.history.pop();
         };
 
         WidgetAddToCart.goToCart = function () {

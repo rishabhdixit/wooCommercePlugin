@@ -7,10 +7,25 @@
       function ($scope, DataStore, TAG_NAMES, WooCommerceSDK, $sce, LAYOUTS, $rootScope, Buildfire, ViewStack) {
 
         var WidgetCart = this;
+        var breadCrumbFlag = true;
         WidgetCart.listeners = {};
         var currentView = ViewStack.getCurrentView();
         var currentStoreURL = "";
         $rootScope.cartItemToUpdate = {};
+
+          buildfire.history.get('pluginBreadcrumbsOnly', function (err, result) {
+              if(result && result.length) {
+                  result.forEach(function(breadCrumb) {
+                      if(breadCrumb.label == 'Cart') {
+                          breadCrumbFlag = false;
+                      }
+                  });
+              }
+              if(breadCrumbFlag) {
+                  buildfire.history.push('Cart', { elementToShow: 'Cart' });
+              }
+          });
+
         WidgetCart.safeHtml = function (html) {
           if (html)
             return $sce.trustAsHtml(html);

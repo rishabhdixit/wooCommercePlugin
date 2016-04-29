@@ -6,11 +6,25 @@
     .controller('WidgetSingleCtrl', ['$scope', 'DataStore', 'TAG_NAMES', 'WooCommerceSDK', '$sce', 'LAYOUTS', '$rootScope', 'Buildfire', 'ViewStack',
       function ($scope, DataStore, TAG_NAMES, WooCommerceSDK, $sce, LAYOUTS, $rootScope, Buildfire, ViewStack) {
         var WidgetSingle = this;
+        var breadCrumbFlag = true;
         WidgetSingle.listeners = {};
         WidgetSingle.data = null;
         WidgetSingle.item = null;
         //create new instance of buildfire carousel viewer
         WidgetSingle.view = null;
+
+          buildfire.history.get('pluginBreadcrumbsOnly', function (err, result) {
+              if(result && result.length) {
+                  result.forEach(function(breadCrumb) {
+                      if(breadCrumb.label == 'Item') {
+                          breadCrumbFlag = false;
+                      }
+                  });
+              }
+              if(breadCrumbFlag) {
+                  buildfire.history.push('Item', { elementToShow: 'Item' });
+              }
+          });
 
         WidgetSingle.safeHtml = function (html) {
             return $sce.trustAsHtml(html) || "";

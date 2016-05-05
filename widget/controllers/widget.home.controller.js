@@ -33,7 +33,7 @@
                         return false;
                 };
                 $rootScope.deviceHeight = window.innerHeight;
-                $rootScope.deviceWidth = window.innerWidth;
+                $rootScope.deviceWidth = window.innerWidth || 320;
                 $rootScope.backgroundImage = "";
                 WidgetHome.loadMore = function () {
                     console.log('>>>>>>>>>>>>>> inside load more widget home controller');

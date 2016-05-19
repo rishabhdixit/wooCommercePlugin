@@ -26,10 +26,14 @@
                 };
 
                 WidgetHome.showDescription = function (description) {
-                    return !((description == '<p>&nbsp;<br></p>') || (description == '<p><br data-mce-bogus="1"></p>'));
+                    console.log('Description---------------------------------------', description);
+                    if (typeof description != 'undefined')
+                        return !((description == '<p>&nbsp;<br></p>') || (description == '<p><br data-mce-bogus="1"></p>') || (description == ''));
+                    else
+                        return false;
                 };
                 $rootScope.deviceHeight = window.innerHeight;
-                $rootScope.deviceWidth = window.innerWidth;
+                $rootScope.deviceWidth = window.innerWidth || 320;
                 $rootScope.backgroundImage = "";
                 WidgetHome.loadMore = function () {
                     console.log('>>>>>>>>>>>>>> inside load more widget home controller');
@@ -48,20 +52,20 @@
                             params: {
                                 slug: slug,
                                 controller: "WidgetItemsCtrl as WidgetItems",
-                                shouldUpdateTemplate : true
+                                shouldUpdateTemplate: true
                             }
                         });
                 };
 
                 WidgetHome.goToCart = function () {
                     /*ViewStack.push({
-                        template: 'Checkout',
-                        params: {
-                            url: WidgetHome.data.content.storeURL + '/cart'
-                        }
-                    });*/
-                  if (WidgetHome.data && WidgetHome.data.content && WidgetHome.data.content.storeURL)
-                    buildfire.navigation.openWindow(WidgetHome.data.content.storeURL + '/cart', "_system");
+                     template: 'Checkout',
+                     params: {
+                     url: WidgetHome.data.content.storeURL + '/cart'
+                     }
+                     });*/
+                    if (WidgetHome.data && WidgetHome.data.content && WidgetHome.data.content.storeURL)
+                        buildfire.navigation.openWindow(WidgetHome.data.content.storeURL + '/cart', "_system");
                 };
 
                 var currentStoreUrl = "";

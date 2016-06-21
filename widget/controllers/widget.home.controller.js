@@ -252,6 +252,27 @@
                     if (type === 'POP') {
                         DataStore.onUpdate().then(null, null, onUpdateCallback);
                     }
+                    if (!ViewStack.hasViews()) {
+                    // bind on refresh again
+                    buildfire.datastore.onRefresh(function () {
+                      init(function(err){
+                        if(!err){
+                          if (!WidgetHome.view) {
+                            WidgetHome.view = new Buildfire.components.carousel.view("#carousel", []);
+                          }
+                          if (WidgetHome.data.content && WidgetHome.data.content.carouselImages) {
+                            WidgetHome.view.loadItems(WidgetHome.data.content.carouselImages);
+                          } else {
+                            WidgetHome.view.loadItems([]);
+                          }
+                          WidgetHome.sections = [];
+                          WidgetHome.busy = false;
+                          WidgetHome.pageNumber = 1;
+                          WidgetHome.loadMore();
+                        }
+                      });
+                    });
+                  }
                 });
 
                 init(function(){});

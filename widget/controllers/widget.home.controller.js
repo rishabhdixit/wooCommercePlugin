@@ -1,6 +1,6 @@
 'use strict';
 
-(function (angular) {
+(function (angular,buildfire) {
     angular
         .module('wooCommercePluginWidget')
         .controller('WidgetHomeCtrl', ['$scope', 'DataStore', 'WooCommerceSDK', 'TAG_NAMES', '$sce', 'LAYOUTS', '$rootScope', 'PAGINATION', 'Buildfire', 'ViewStack',
@@ -24,6 +24,27 @@
                         return $sce.trustAsHtml($html.html());
                     }
                 };
+
+              //Refresh list of items on pulling the tile bar
+
+              buildfire.datastore.onRefresh(function () {
+                init(function(err){
+                  if(!err){
+                    if (!WidgetHome.view) {
+                      WidgetHome.view = new Buildfire.components.carousel.view("#carousel", []);
+                    }
+                    if (WidgetHome.data.content && WidgetHome.data.content.carouselImages) {
+                      WidgetHome.view.loadItems(WidgetHome.data.content.carouselImages);
+                    } else {
+                      WidgetHome.view.loadItems([]);
+                    }
+                    WidgetHome.sections = [];
+                    WidgetHome.busy = false;
+                    WidgetHome.pageNumber = 1;
+                    WidgetHome.loadMore();
+                  }
+                });
+              });
 
                 WidgetHome.showDescription = function (description) {
                     console.log('Description---------------------------------------', description);
@@ -103,7 +124,7 @@
                  * Fetch user's data from datastore
                  */
 
-                var init = function () {
+                var init = function (cb) {
                     var success = function (result) {
                             WidgetHome.data = result.data;
                             if (!WidgetHome.data.design)
@@ -131,9 +152,11 @@
                                 initialize(WidgetHome.data.content.storeURL, WidgetHome.data.content.consumerKey, WidgetHome.data.content.consumerSecret);
                             else
                                 WidgetHome.sections = [];
+                            cb();
                         }
                         , error = function (err) {
                             console.error('Error while getting data', err);
+                        cb(err);
                         };
                     DataStore.get(TAG_NAMES.WOOCOMMERCE_INFO).then(success, error);
                 };
@@ -231,6 +254,6 @@
                     }
                 });
 
-                init();
+                init(function(){});
             }]);
-})(window.angular);
+})(window.angular, window.buildfire);

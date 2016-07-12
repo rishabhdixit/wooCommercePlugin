@@ -152,7 +152,7 @@ function getProductCategories(req, res) {
     var consumerSecret = req.query.consumerSecret || req.body.consumerSecret;
     var WooCommerce = getWooCommerceObject(storeURL, consumerKey, consumerSecret);
     WooCommerce.get(url, function (err, data, response) {
-        response = response && !(/<[a-z][\s\S]*>/i.test(JSON.stringify(response))) && JSON.parse(response);
+        response = response && JSON.parse(response);
         console.log('error and response is : ', err, response);
         if (err || !response) {
             res.send({

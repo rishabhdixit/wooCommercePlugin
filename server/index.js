@@ -69,14 +69,23 @@ app.post('/initialize', function (req, res) {
     getProductCategories(req, res);
 });
 
+function isJson(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
 app.get('/getProducts', function (req, res) {
     var WooCommerce = getWooCommerceObject(req.query.storeURL, req.query.consumerKey, req.query.consumerSecret);
     if(req.query && req.query.id) {
         WooCommerce.get('products/' + req.query.id, function(err, data, response) {
-            response = response && JSON.parse(response);
-            if(err) {
+            response = response && isJson(response) && JSON.parse(response);
+            if(err || !response) {
                 res.send({
-                    data: err,
+                    data: err || response,
                     status: 500
                 });
             } else if(response && response.errors && response.errors.length > 0 && response.errors[0].code) {
@@ -93,11 +102,11 @@ app.get('/getProducts', function (req, res) {
         });
     } else {
         WooCommerce.get('products', function (err, data, response) {
-            response = response && JSON.parse(response);
+            response = response && isJson(response) && JSON.parse(response);
             console.log('response is::::::::::', err, response);
-            if(err) {
+            if(err || !response) {
                 res.send({
-                    data: err,
+                    data: err || response,
                     status: 500
                 });
             } else if(response && response.errors && response.errors.length > 0 && response.errors[0].code) {
@@ -124,10 +133,10 @@ app.get('/getProductsByCategory', function (req, res) {
     console.log('getProductsByCategory url is:', url);
     var WooCommerce = getWooCommerceObject(req.query.storeURL, req.query.consumerKey, req.query.consumerSecret);
     WooCommerce.get(url, function (err, data, response) {
-        response = response && JSON.parse(response);
-        if(err) {
+        response = response && isJson(response) && JSON.parse(response);
+        if(err || !response) {
             res.send({
-                data: err,
+                data: err || response,
                 status: 500
             });
         } else if(response && response.errors && response.errors.length > 0 && response.errors[0].code) {
@@ -152,7 +161,7 @@ function getProductCategories(req, res) {
     var consumerSecret = req.query.consumerSecret || req.body.consumerSecret;
     var WooCommerce = getWooCommerceObject(storeURL, consumerKey, consumerSecret);
     WooCommerce.get(url, function (err, data, response) {
-        response = response && !(/<[a-z][\s\S]*>/i.test(JSON.stringify(response))) && JSON.parse(response);
+        response = response && isJson(response) && JSON.parse(response);
         console.log('error and response is : ', err, response);
         if (err || !response) {
             res.send({

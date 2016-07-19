@@ -14,8 +14,8 @@
                         <div class="list-media-holder square-icon pull-left">
                             <img ng-if="!section.image"
                                  src="../../../styles/media/holder-1x1.png" ng-click="WidgetHome.showItems(section.slug)">
-                            <img load-image="1x1"
-                                 data-final-src="{{section.image | cropImage : 60 :60}}"
+                            <img load-image="1x1" crop-width="60" crop-height="60" crop-type="crop"
+                                 data-final-src="{{section.image}}"
                                  ng-if="section.image" ng-click="WidgetHome.showItems(section.slug)">
                         </div>
                         <div class="list-item-copy text-left padding-left-ten padding-right-ten cursor" ng-click="WidgetHome.showItems(section.slug)">

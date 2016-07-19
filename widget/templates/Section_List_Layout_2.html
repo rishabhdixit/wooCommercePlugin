@@ -19,8 +19,8 @@
                         <div class="media-img-holder" style="min-height: 194px;">
                             <img ng-if="!section.image"
                                  src="../../../styles/media/holder-239x1.png" ng-click="WidgetHome.showItems(section.slug)">
-                            <img load-image="239x1"
-                                 data-final-src="{{section.image | getImageUrl : 640 : 380}}"
+                            <img load-image="239x1" crop-width="640" crop-height="380" crop-type="crop"
+                                 data-final-src="{{section.image}}"
                                  ng-if="section.image" ng-click="WidgetHome.showItems(section.slug)">
                         </div>
                         <div class="info-bar titleBarBackgroundTheme padding-left-ten text-center padding-right-ten cursor"

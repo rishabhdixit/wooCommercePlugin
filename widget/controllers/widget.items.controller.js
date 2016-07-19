@@ -1,6 +1,6 @@
 'use strict';
 
-(function (angular) {
+(function (angular,buildfire) {
   angular
     .module('wooCommercePluginWidget')
     .controller('WidgetItemsCtrl', ['$scope', 'DataStore', 'TAG_NAMES', 'WooCommerceSDK', '$sce', 'LAYOUTS', '$rootScope', 'PAGINATION', 'Buildfire', 'ViewStack',
@@ -14,6 +14,11 @@
         WidgetItems.noItemFound = false;
         WidgetItems.currentView = ViewStack.getCurrentView();
         var currentItemListLayout = "";
+
+        //Refresh list of items on pulling the tile bar
+        buildfire.datastore.onRefresh(function () {
+
+        });
 
         WidgetItems.loadMore = function () {
           console.log("loading some more...");
@@ -208,4 +213,4 @@
 
         init();
       }]);
-})(window.angular);
+})(window.angular, window.buildfire);

@@ -29,19 +29,20 @@
                     <input type="number" class="form-control" placeholder="1" min="1" ng-model="WidgetAddToCart.quantity" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                 </div>
             </div>
-            <hr class="none" ng-if="WidgetAddToCart.item.variations && WidgetAddToCart.item.variations.length">
-            <div class="item clearfix row" ng-if="WidgetAddToCart.item.variations && WidgetAddToCart.item.variations.length">
+
+            <div class="item clearfix row" ng-if="WidgetAddToCart.item.variations && WidgetAddToCart.item.variations.length" ng-repeat="(key, value) in WidgetAddToCart.variations">
+                <hr class="none">
                 <div class="labels col-xs-3 padding-right-zero pull-left margin-top-five">
-                    <span>{{WidgetAddToCart.currentAddedItemInCart.Variant.attributes[0].name|| 'Variant'}}</span>
+                    <span>{{key || 'Variant'}}</span>
                 </div>
                 <div class="main col-xs-9 pull-right">
                     <div class="dropdown" dropdown>
                         <button class="btn btn-default text-left dropdown-toggle" data-toggle="dropdown" dropdown-toggle aria-expanded="true">
-                            <span class="pull-left">{{WidgetAddToCart.currentAddedItemInCart.Variant.attributes[0].option||WidgetAddToCart.item.title}}</span>
+                            <span class="pull-left">{{WidgetAddToCart.currentAddedItemInCart.Variant.attributes[$index].option||WidgetAddToCart.item.title}}</span>
                             <span class="chevron icon-chevron-down pull-right"></span>
                         </button>
                         <ul class="dropdown-menu extended" role="menu">
-                            <li ng-repeat="variant in WidgetAddToCart.item.variations" ><a tabindex="-1" ng-click="WidgetAddToCart.selectVariant(variant)">{{variant.attributes && variant.attributes.length > 0 && variant.attributes[0].option}}</a></li>
+                            <li ng-repeat="option in value"><a tabindex="-1" ng-click="WidgetAddToCart.selectVariant(key, option)">{{option}}</a></li>
                         </ul>
                     </div>
                 </div>

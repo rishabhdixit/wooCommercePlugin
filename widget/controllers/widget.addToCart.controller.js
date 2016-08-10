@@ -9,6 +9,7 @@
         var WidgetAddToCart = this;
         WidgetAddToCart.listeners = {};
         WidgetAddToCart.quantity = 1;
+        WidgetAddToCart.variations = {};
         WidgetAddToCart.currentAddedItemInCart = {
           Variant: null
         };
@@ -35,6 +36,17 @@
                   Variant: WidgetAddToCart.item.variations[0]
                 };
               }
+
+              WidgetAddToCart.item.variations.forEach(function (variation) {
+                    variation.attributes.forEach(function (data) {
+                        if (WidgetAddToCart.variations[data.name] && WidgetAddToCart.variations[data.name].indexOf(data.option) == -1) {
+                            WidgetAddToCart.variations[data.name].push(data.option);
+                        } else {
+                            WidgetAddToCart.variations[data.name] = [];
+                            WidgetAddToCart.variations[data.name].push(data.option);
+                        }
+                    });
+              });
               console.log("WidgetAddToCart", WidgetAddToCart)
             }
             , error = function (err) {
@@ -97,16 +109,47 @@
          */
         DataStore.onUpdate().then(null, null, onUpdateCallback);
 
-        WidgetAddToCart.selectVariant = function (variant) {
-          WidgetAddToCart.currentAddedItemInCart.Variant = variant;
+        WidgetAddToCart.selectVariant = function (key, value) {
+           var attributesObject = {};
+           var flag = true;
+           var attributesArray = angular.copy(WidgetAddToCart.currentAddedItemInCart.Variant.attributes);
+            attributesArray.forEach(function (attribute, index) {
+                if(attribute.name == key) {
+                    attributesArray[index].option = value;
+                }
+            });
+            attributesArray.forEach(function (attribute) {
+                attributesObject[attribute.name] = attribute.option;
+            });
+            WidgetAddToCart.item.variations.some(function (variation) {
+                variation.attributes.some(function (data) {
+                    if (data.name && attributesObject[data.name] && data.option == attributesObject[data.name]) {
+
+                    } else {
+                        flag = false;
+                        return true;
+                    }
+                });
+                if(flag) {
+                    WidgetAddToCart.currentAddedItemInCart.Variant = angular.copy(variation);
+                    return true;
+                } else {
+                    flag = true;
+                }
+            });
+
+//          WidgetAddToCart.currentAddedItemInCart.Variant = variant;
         };
 
         WidgetAddToCart.proceedToCart = function (item) {
           Buildfire.spinner.show();
           var parentId = item.attributes && item.attributes.length ? WidgetAddToCart.item.id : null;
-          var url;
+          var url, attributes = '';
           if (parentId) {
-            url = WidgetAddToCart.data.content.storeURL + '/cart/?add-to-cart=' + parentId + '&variation_id=' + item.id + '&quantity=' + WidgetAddToCart.quantity + '&attribute_pa_' + item.attributes[0].slug + '=' + item.attributes[0].option;
+            item.attributes.forEach(function (attribute) {
+                attributes = attributes + '&attribute_pa_' + attribute.slug + '=' + attribute.option;
+            });
+            url = WidgetAddToCart.data.content.storeURL + '/cart/?add-to-cart=' + parentId + '&variation_id=' + item.id + '&quantity=' + WidgetAddToCart.quantity + attributes;
           } else {
             url = WidgetAddToCart.data.content.storeURL + '/cart/?add-to-cart=' + item.id + '&quantity=' + WidgetAddToCart.quantity;
           }

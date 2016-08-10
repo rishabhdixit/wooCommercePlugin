@@ -4,6 +4,7 @@
 ,"pluginDescription":"The world's favorite eCommerce solution that gives you complete control to sell anything."
 ,"supportEmail":"support@buildfire.com"
 ,"pluginIcon": "icon.png"
+,"offlineModeEnabled": true
 ,"control":{
   "content":{
     "enabled":true
